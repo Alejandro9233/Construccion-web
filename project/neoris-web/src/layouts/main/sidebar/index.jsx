@@ -1,93 +1,109 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, withRouter } from "react-router-dom";
-import { Image, Typography, Button } from "antd";
-import { Menu } from "./elements";
-//import Logo from "./logo4.png";
+import { Image } from "antd";
+import { Menu, Button, Text, Container } from "./elements";
+import Logo from "./logo.png";
+import { FundTwoTone, HomeTwoTone } from "@ant-design/icons";
 
 const { Item } = Menu;
-const { Text } = Typography;
 
 const Sidebar = () => {
-
- /* const handleLogout = async () => {
+  /* const handleLogout = async () => {
     await logout();
   };
   */
 
-  let routes = (
-  <>
-    <Item key="/dashboard">
-      <Link to="/dashboard">
-        <Text strong style={{ color: "white" }}>
-          Dashboard
-        </Text>
-      </Link>
-    </Item>
-  </>
-);
-let routesAdmin = (
-    <>
-    <Item key="/dashboard">
-      <Link to="/dashboard">
-        <Text strong style={{ color: "white" }}>
-          Dashboard
-        </Text>
-      </Link>
-    </Item>
-  </>
-);
-return (
-  <div
-    style={{
-      display: "flex",
-      flexDirection: "column",
-      height: "100hv",
-      justifyContent: "space-between",
-    }}
-  >
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <Image
-        style={{
-          display: "block",
-          paddingLeft: 30,
-          paddingRight: 30,
-          marginTop: 20,
-        }}
-        preview={false}
-        height={28}
-        src="https://www.neoris.com/wp-content/uploads/2020/09/Neoris-Logo-White.png"
-        alt=""
-      />
+  const [selectedKey, setSelectedKey] = useState(null);
 
-      <Menu
-        theme="dark"
+  let routes = (
+    <>
+      <Item
+        icon={<FundTwoTone />}
+        key="/dashboard"
+        onClick={() => setSelectedKey("/dashboard")}
         style={{
-          marginTop: 40,
-          background: "none",
+          background:
+            selectedKey === "/dashboard"
+              ? "linear-gradient(to right, black 80%, gray)"
+              : "none",
+          padding: "0 30px",
+          display: "flex",
+          alignItems: "center",
+          marginBottom: 10,
         }}
       >
-        {routes}
-      </Menu>
-    </div>
-    <div
-      style={{
-        width: "100%",
-        display: "flex",
-        justifyContent: "center",
-        padding: "15px 0 ",
-      }}
-    >
-      <Button type="danger" onClick={() => console.log('cerrar sesion')}>
-        Cerrar Session
-      </Button>
-    </div>
-  </div>
-);
-}
+        <Link to="/dashboard">
+          <Text selected={selectedKey === "/dashboard"}>Dashboard</Text>
+        </Link>
+      </Item>
+      <Item
+        icon={<HomeTwoTone />}
+        key="/home"
+        onClick={() => setSelectedKey("/home")}
+        style={{
+          background:
+            selectedKey === "/home"
+              ? "linear-gradient(to right, black 80%, gray)"
+              : "none",
+          padding: "0 30px",
+          display: "flex",
+          alignItems: "center",
+          marginBottom: 10,
+        }}
+      >
+        <Link to="/home">
+          <Text selected={selectedKey === "/home"}>Home</Text>
+        </Link>
+      </Item>
+    </>
+  );
+
+  return (
+    <Container>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <Image
+          style={{
+            display: "block",
+            paddingLeft: 30,
+            paddingRight: 30,
+            marginTop: 20,
+          }}
+          preview={false}
+          height={"50px"}
+          width={"242px"}
+          src={Logo}
+          alt=""
+        />
+
+        <Menu
+          theme="dark"
+          style={{
+            marginTop: 40,
+            background: "none",
+          }}
+        >
+          {routes}
+        </Menu>
+      </div>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          padding: "15px 0 ",
+        }}
+      >
+        <Button type="danger" onClick={() => console.log("cerrar sesion")}>
+          Cerrar Session
+        </Button>
+      </div>
+    </Container>
+  );
+};
 
 export default withRouter(Sidebar);

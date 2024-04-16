@@ -12,7 +12,7 @@ const MainLayout = ({ children }) => {
     <Layer style={{ minHeight: "100vh", maxHeight: "100vh" }}>
       <Layer
         style={{
-          background: "linear-gradient(to bottom, #342b58 14%, #1f1b3e 76%",
+          background: "#ffffff",
           display: "flex",
           flexDirection: "row",
         }}
@@ -23,7 +23,7 @@ const MainLayout = ({ children }) => {
             margin: 15,
             height: "96vh",
             width: "90vw",
-            overflow: "scroll",
+            overflow: "hidden",
             borderRadius: 20,
           }}
         >
