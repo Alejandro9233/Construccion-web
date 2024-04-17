@@ -11,7 +11,7 @@ const Public = () => {
     <Router>
       <Suspense fallback={<TopBarProgress />}>
         <Switch>
-          <Route path="/Ye" component={YeComponent} />
+          <Route path="public/Ye" component={YeComponent} />
         </Switch>
       </Suspense>
     </Router>
