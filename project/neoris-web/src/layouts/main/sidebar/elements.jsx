@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Menu as CommonMenu, Button as AntButton, Typography } from "antd";
+import { Menu as CommonMenu, Typography } from "antd";
 
 const { Text: AntText } = Typography;
 
@@ -7,6 +7,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin: 10px;
   height: 98vh;
   border-radius: 30px;
   background: #fff;
@@ -19,21 +20,6 @@ const Menu = styled(CommonMenu)`
   }
 `;
 
-const Button = styled(AntButton)`
-  &.ant-btn-danger {
-    background-color: red;
-    border-color: red;
-    color: white;
-
-    &:hover,
-    &:focus {
-      background-color: darkred;
-      border-color: darkred;
-      color: white;
-    }
-  }
-`;
-
 const Text = styled(AntText)`
   font-size: 1.4rem;
   font-weight: 500;
@@ -42,4 +28,4 @@ const Text = styled(AntText)`
   color: ${(props) => (props.selected ? "white" : "#010202")};
 `;
 
-export { Menu, Button, Text, Container };
+export { Menu, Text, Container };
