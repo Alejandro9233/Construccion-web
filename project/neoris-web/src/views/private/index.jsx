@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
-//import MainLayout from "layouts/main";
+import MainLayout from "../../layouts/main";
 //import AuthLayout from "layouts/auth";
 import Authentication from "./routes/authentication";
 import CRM from "./routes/crm";
@@ -10,7 +10,7 @@ const Private = () => {
 
   const [a] = useState(true);
 
-  if (a) {
+  if (!a) {
     return (
       // <AuthLayout>
       <Authentication />
@@ -18,9 +18,9 @@ const Private = () => {
     );
   } else {
     return (
-      // <MainLayout>
-      <CRM />
-      // </MainLayout>
+      <MainLayout>
+        <CRM />
+      </MainLayout>
     );
   }
 };
