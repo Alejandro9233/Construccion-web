@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, withRouter } from "react-router-dom";
-import { Image } from "antd";
-import { Menu, Button, Text, Container } from "./elements";
+import { Image, Button, Divider } from "antd";
+import { Menu, Text, Container } from "./elements";
 import Logo from "./logo.png";
 import { FundTwoTone, HomeTwoTone } from "@ant-design/icons";
 
@@ -24,7 +24,7 @@ const Sidebar = () => {
         style={{
           background:
             selectedKey === "/dashboard"
-              ? "linear-gradient(to right, black 80%, gray)"
+              ? "linear-gradient(to top right, black 60%, gray)"
               : "none",
           padding: "0 30px",
           display: "flex",
@@ -43,7 +43,7 @@ const Sidebar = () => {
         style={{
           background:
             selectedKey === "/home"
-              ? "linear-gradient(to right, black 80%, gray)"
+              ? "linear-gradient(to top right, black 60%, gray)"
               : "none",
           padding: "0 30px",
           display: "flex",
@@ -79,11 +79,10 @@ const Sidebar = () => {
           src={Logo}
           alt=""
         />
-
+        <Divider />
         <Menu
           theme="dark"
           style={{
-            marginTop: 40,
             background: "none",
           }}
         >
@@ -98,7 +97,7 @@ const Sidebar = () => {
           padding: "15px 0 ",
         }}
       >
-        <Button type="danger" onClick={() => console.log("cerrar sesion")}>
+        <Button danger onClick={() => console.log("cerrar sesion")}>
           Cerrar Session
         </Button>
       </div>
