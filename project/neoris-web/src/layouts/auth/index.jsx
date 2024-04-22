@@ -30,12 +30,13 @@ function AuthLayout({ children }) {
                 marginTop: '-50px',}}
         /> 
         <div style={{display: 'flex', flexDirection: 'row', alignItems: 'flex-end'}}>
-          <Text>License</Text>
-          <Text>Terms of Use</Text>
-          <Text>Blog</Text>
+          <Text className='footerRight'>License</Text>
+          <Text className='footerRight'>Terms of Use</Text>
+          <Text className='footerRight'>Blog</Text>
         </div>
         </div>
     </Container>
+    <footer style={{position:'absolute', bottom:'0',left:'0' ,paddingBottom:'10px', paddingLeft:'305px'}}><Text className="footerLeft">© 2024 NEORIS UI. All Rights Reserved. Made with love by ITESM!</Text></footer>
    </div>
   )
 }

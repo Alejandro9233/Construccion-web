@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import "@fontsource/dm-sans";
-import { Button as AntButton, Typography } from "antd";
+import { Button as AntButton, Typography, Form } from "antd";
 
 const { Text: AntText } = Typography;
 
 const StyledLink = styled(Link)`
-    color: #1B242A;
+    color: #0E46A3;
+    font-family: "DM Sans";
     font-size: 16px;
     font-style: normal;
     font-weight: 900;
@@ -15,6 +16,10 @@ const StyledLink = styled(Link)`
     text-decoration: none;
     
 `;
+
+const StyledFormItem = styled(Form.Item)`
+    margin: 3px;
+`
 
 const Text = styled(AntText)`
     font-family: "DM Sans";
@@ -52,4 +57,4 @@ const Button = styled(AntButton)`
 `;
 
 
-export { Text, Button, StyledLink };
+export { Text, Button, StyledLink, StyledFormItem };

@@ -19,9 +19,18 @@ const Container = styled.div`
 `;
 
 const Text = styled(AntText)`
-    color: white;
-    padding: 15px;
-    align-self: flex-end;
+    &.footerRight {
+        color: white;
+        padding: 15px;
+        align-self: flex-end;
+    }
+
+    &.footerLeft {
+        color: #A3AED0;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 100%; 
+    }
 `
 
 
