@@ -85,8 +85,16 @@ const Signup = () => {
             name="password"
             rules={[
               {
-                min: 8,
-                message: 'Password must be at least 8 characters long',
+                validator(rule, value) {
+                  return new Promise((resolve, reject)=> {
+                    if(/^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.{7,})/.test(value)){
+                      resolve();
+                    }
+                    else {
+                      reject("Password must be a minimum of 7 characters, have at least one uppercase letter and one special character")
+                    }
+                  })
+                }
               }
             ]}
             >
