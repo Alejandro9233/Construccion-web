@@ -3,7 +3,13 @@ import { Link, withRouter } from "react-router-dom";
 import { Image, Button, Divider } from "antd";
 import { Menu, Text, Container } from "./elements";
 import Logo from "./logo.png";
-import { FundTwoTone, HomeTwoTone } from "@ant-design/icons";
+import {
+  FundTwoTone,
+  HomeTwoTone,
+  IdcardTwoTone,
+  BookTwoTone,
+  PieChartTwoTone,
+} from "@ant-design/icons";
 
 const { Item } = Menu;
 
@@ -12,22 +18,22 @@ const Sidebar = () => {
     await logout();
   };
   */
-  const { user } = { user: { name: "John Doe", type: "admin" } };
+  const { user } = { user: { name: "John Doe", type: "client" } };
 
   const [selectedKey, setSelectedKey] = useState(null);
 
   let routes = (
     <>
       <Item
-        icon={<FundTwoTone />}
+        icon={<IdcardTwoTone style={{ fontSize: "20px" }} />}
         key="/profile"
         onClick={() => setSelectedKey("/profile")}
         style={{
           background:
             selectedKey === "/profile"
-              ? "linear-gradient(to top right, black 60%, gray)"
+              ? "linear-gradient(to top right, #90D7E7 60%, #108ee9)"
               : "none",
-          padding: "0 30px",
+          paddingLeft: "30px",
           display: "flex",
           alignItems: "center",
           marginBottom: 10,
@@ -38,15 +44,15 @@ const Sidebar = () => {
         </Link>
       </Item>
       <Item
-        icon={<HomeTwoTone />}
+        icon={<BookTwoTone style={{ fontSize: "20px" }} />}
         key="/courses"
         onClick={() => setSelectedKey("/courses")}
         style={{
           background:
             selectedKey === "/courses"
-              ? "linear-gradient(to top right, black 60%, gray)"
+              ? "linear-gradient(to top right, #90D7E7 60%, #108ee9)"
               : "none",
-          padding: "0 30px",
+          paddingLeft: "30px",
           display: "flex",
           alignItems: "center",
           marginBottom: 10,
@@ -62,15 +68,15 @@ const Sidebar = () => {
   let routesAdmin = (
     <>
       <Item
-        icon={<FundTwoTone />}
+        icon={<PieChartTwoTone style={{ fontSize: "20px" }} />}
         key="/dashboard"
         onClick={() => setSelectedKey("/dashboard")}
         style={{
           background:
             selectedKey === "/dashboard"
-              ? "linear-gradient(to top right, black 60%, gray)"
+              ? "linear-gradient(to top right, #90D7E7 60%, #108ee9)"
               : "none",
-          padding: "0 30px",
+          paddingLeft: "30px",
           display: "flex",
           alignItems: "center",
           marginBottom: 10,
@@ -81,15 +87,15 @@ const Sidebar = () => {
         </Link>
       </Item>
       <Item
-        icon={<HomeTwoTone />}
+        icon={<IdcardTwoTone style={{ fontSize: "20px" }} />}
         key="/users"
         onClick={() => setSelectedKey("/users")}
         style={{
           background:
             selectedKey === "/users"
-              ? "linear-gradient(to top right, black 60%, gray)"
+              ? "linear-gradient(to top right, #90D7E7 60%, #108ee9)"
               : "none",
-          padding: "0 30px",
+          paddingLeft: "30px",
           display: "flex",
           alignItems: "center",
           marginBottom: 10,
