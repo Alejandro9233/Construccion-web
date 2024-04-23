@@ -3,7 +3,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import TopBarProgress from "react-topbar-progress-indicator";
 import Loadable from "react-loadable";
 
-const { user } = { user: { name: "John Doe", type: "admin" } };
+const { user } = { user: { name: "John Doe", type: "client" } };
 
 //Client Routes
 const Profile = Loadable({
