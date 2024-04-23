@@ -12,10 +12,54 @@ const Sidebar = () => {
     await logout();
   };
   */
+  const { user } = { user: { name: "John Doe", type: "admin" } };
 
   const [selectedKey, setSelectedKey] = useState(null);
 
   let routes = (
+    <>
+      <Item
+        icon={<FundTwoTone />}
+        key="/profile"
+        onClick={() => setSelectedKey("/profile")}
+        style={{
+          background:
+            selectedKey === "/profile"
+              ? "linear-gradient(to top right, black 60%, gray)"
+              : "none",
+          padding: "0 30px",
+          display: "flex",
+          alignItems: "center",
+          marginBottom: 10,
+        }}
+      >
+        <Link to="/profile">
+          <Text selected={selectedKey === "/profile"}>Perfil</Text>
+        </Link>
+      </Item>
+      <Item
+        icon={<HomeTwoTone />}
+        key="/courses"
+        onClick={() => setSelectedKey("/courses")}
+        style={{
+          background:
+            selectedKey === "/courses"
+              ? "linear-gradient(to top right, black 60%, gray)"
+              : "none",
+          padding: "0 30px",
+          display: "flex",
+          alignItems: "center",
+          marginBottom: 10,
+        }}
+      >
+        <Link to="/courses">
+          <Text selected={selectedKey === "/courses"}>Cursos</Text>
+        </Link>
+      </Item>
+    </>
+  );
+
+  let routesAdmin = (
     <>
       <Item
         icon={<FundTwoTone />}
@@ -38,11 +82,11 @@ const Sidebar = () => {
       </Item>
       <Item
         icon={<HomeTwoTone />}
-        key="/home"
-        onClick={() => setSelectedKey("/home")}
+        key="/users"
+        onClick={() => setSelectedKey("/users")}
         style={{
           background:
-            selectedKey === "/home"
+            selectedKey === "/users"
               ? "linear-gradient(to top right, black 60%, gray)"
               : "none",
           padding: "0 30px",
@@ -52,7 +96,7 @@ const Sidebar = () => {
         }}
       >
         <Link to="/home">
-          <Text selected={selectedKey === "/home"}>Home</Text>
+          <Text selected={selectedKey === "/users"}>Usuarios</Text>
         </Link>
       </Item>
     </>
@@ -86,7 +130,7 @@ const Sidebar = () => {
             background: "none",
           }}
         >
-          {routes}
+          {user.type === "admin" ? routesAdmin : routes}
         </Menu>
       </div>
       <div
