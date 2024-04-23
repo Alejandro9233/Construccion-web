@@ -30,11 +30,10 @@ const MainLayout = ({ children }) => {
           <Navbar />
           <Card
             style={{
-              margin: 15,
               height: "96vh",
               width: "90vw",
-              overflow: "hidden",
-              borderRadius: 20,
+              overflow: "auto",
+              border: "none",
             }}
           >
             {children}
