@@ -5,6 +5,7 @@ const morgan = require('morgan');
 
 // Importar rutas
 const routerUsuarios =  require('./routes/usuarios.routes');
+const routerDashboardAdmin = require('./routes/dashboard_admin.routes');
 
 // Crear servidor
 const app = express();
@@ -16,6 +17,7 @@ app.use(morgan('dev'));
 
 // Usar rutas en la aplicación
 app.use(routerUsuarios);
+app.use(routerDashboardAdmin);
 
 app.listen(5000, () => {
     console.log('Server is running on http://localhost:5000');
@@ -23,5 +25,7 @@ app.listen(5000, () => {
 
 app.get('/', (req, res) => {
     
-    res.json({ message: 'Hola Mundo' });
+    res.json({ 
+        message: 'Hola Mundo' 
+    });
 });
