@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Image, Row, Col } from "antd";
 import backgroundImg from "./ProfileBg.png";
