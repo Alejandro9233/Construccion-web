@@ -24,4 +24,4 @@ async function closeConnection() {
     await sql.close()
 }
 
-module.exports = { getConnection, closeConnection };
+module.exports = {getConnection, closeConnection};

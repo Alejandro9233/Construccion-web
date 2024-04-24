@@ -1,4 +1,4 @@
-const sql = require('../db/db');
+const db = require('../db/db');
 
 // Obtener leaderboard de usuarios
 /* Arreglo de objetos en el siguiente formato:
@@ -11,27 +11,28 @@ const sql = require('../db/db');
 */
 async function getLeaderboard(req, res) {
     try {
-        const pool = await sql.getConnection();
+        const pool = await db.getConnection();
         const result = await pool.request().query('EXEC datos_leaderboard;');
         res.json(result.recordset);
-        sql.closeConnection();
     } catch (error) {
         console.error('Error fetching leaderboard:', error);
         res.status(500).json({ error: 'Internal Server Error' });
+    } finally {
+        db.closeConnection();
     }
 }
 
 async function getPrueba(req, res) {
     try {
-        const pool = await sql.getConnection();
+        const pool = await db.getConnection();
         const result = await pool.request().query('SELECT 1;');
         res.json(result.recordset);
-        sql.closeConnection();
     } catch (error) {
         console.error('Error fetching leaderboard:', error);
         res.status(500).json({ error: 'Internal Server Error' });
+    } finally {
+        db.closeConnection();
     }
-
 }
 
 // 
