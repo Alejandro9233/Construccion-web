@@ -6,7 +6,7 @@ import CoursesCard from "./components/coursesCard";
 import InfoCard from "./components/infoCard";
 import { Row, Col } from "antd";
 
-const Dashboard = () => {
+const Profile = () => {
   return (
     <Container>
       <Col style={{ width: "100%" }}>
@@ -46,4 +46,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Profile;
