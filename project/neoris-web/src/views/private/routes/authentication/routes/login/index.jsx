@@ -116,7 +116,7 @@ const Login = (setUser) => {
           flexDirection: "column",
           justifyContent: "center",
           height: "95vh",
-          paddingLeft:'305px'}}> 
+          paddingLeft:'25%'}}> 
 
         <Form 
           validateTrigger="onSubmit" 

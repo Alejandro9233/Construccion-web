@@ -14,7 +14,7 @@ const isDisabled = email === "";
       flexDirection: "column",
       justifyContent: "center",
       height: "90vh",
-      paddingLeft:'305px'}}> 
+      paddingLeft:'25%'}}> 
            <div style={{display: 'flex', 
                       flexDirection:'column', 
                       justifyContent:'space-between', 

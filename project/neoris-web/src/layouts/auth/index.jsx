@@ -7,9 +7,22 @@ import { Container, Text } from './elements';
 
 function AuthLayout({ children }) {
   return (
-   <div style={{display:'flex', flexDirection:'row',}}>
-    {children}
-     <Container>
+   <div style={{
+    display:'flex', 
+    flexDirection:'row',
+    width:'100%',
+    minHeight:'100vh'}}>
+    <div style={{
+      position:'absolute',
+      height:'100%',
+      width:'50%',
+    }}>
+      {children}
+    </div>
+    <div style={{
+      marginLeft:'305px',
+    }}>
+    <Container>
         <div style={{display: 'flex', flexDirection: "column",  alignItems:'center', height:'100%', justifyContent:'space-between'}}>
         <Image
             width={419}
@@ -18,7 +31,8 @@ function AuthLayout({ children }) {
             preview={false}
             style={{ 
                 margin: '0 auto', 
-                marginTop: '100px',}}
+                marginTop: '100px',
+                overflow: 'hidden'}}
         /> 
         <Image
             width={350}
@@ -36,6 +50,7 @@ function AuthLayout({ children }) {
         </div>
         </div>
     </Container>
+    </div>
     <footer style={{position:'absolute', bottom:'0',left:'0' ,paddingBottom:'10px', paddingLeft:'305px'}}><Text className="footerLeft">© 2024 NEORIS UI. All Rights Reserved. Made with love by ITESM!</Text></footer>
    </div>
   )
