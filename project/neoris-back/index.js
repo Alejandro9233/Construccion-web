@@ -7,6 +7,7 @@ const morgan = require('morgan');
 const routerUsuarios =  require('./routes/usuarios.routes');
 const routerDashboardAdmin = require('./routes/dashboard_admin.routes');
 const routerUnity = require('./routes/unity.routes');
+const routerPerfil = require('./routes/perfil.routes');
 
 // Crear servidor
 const app = express();
@@ -20,6 +21,7 @@ app.use(morgan('dev'));
 app.use(routerUsuarios);
 app.use(routerDashboardAdmin);
 app.use(routerUnity);
+app.use(routerPerfil);
 
 app.listen(5000, () => {
     console.log('Server is running on http://localhost:5000');

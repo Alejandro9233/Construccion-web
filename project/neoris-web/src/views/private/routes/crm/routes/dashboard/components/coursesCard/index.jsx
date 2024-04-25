@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Image, Row, Col, Button } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 
@@ -98,6 +98,21 @@ const courses = [
 const CoursesCard = () => {
   const text =
     "Here you can find more details about your courses. Keep yourself engaged by providing meaningful information.";
+
+  // const [courses, setCourses] = useState([]);
+
+  // useEffect(() => {
+  //   fetch("http://localhost:5000/listado-cursos-web")
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       console.log(data);
+  //       setCourses(data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
+  
   return (
     <StyledDiv>
       <StyledTitle>All Courses</StyledTitle>
