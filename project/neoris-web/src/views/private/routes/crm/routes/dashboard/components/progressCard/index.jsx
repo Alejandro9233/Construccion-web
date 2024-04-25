@@ -9,15 +9,21 @@ const ProgressCard = () => {
   const [progress, setProgress] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/promedio-avance/1")
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(data);
-      setProgress(data);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+
+    const fetchData = async () => {
+      await fetch("http://localhost:5000/promedio-avance/1")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setProgress(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    };
+    
+    fetchData();
+
   }, []);
 
   const percentage = progress.length > 0 ? progress[0].porcentaje_promedio : 0;

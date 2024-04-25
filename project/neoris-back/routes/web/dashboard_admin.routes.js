@@ -1,5 +1,5 @@
 // Importar los controladores del dsahboard de admins y el router
-const dashboardAdminController = require('../controllers/dashboard_admin.controllers');
+const dashboardAdminController = require('../../controllers/web/dashboard_admin.controllers');
 const router = require('express').Router();
 
 // Conexiones por fecha

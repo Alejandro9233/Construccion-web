@@ -8,18 +8,18 @@ import CRM from "./routes/crm";
 const Private = () => {
   //const location = useLocation();
 
-  const [a] = useState(true);
+  const [user, setUser] = useState();
 
-  if (a) {
+  if (!user) {
     return (
-       <AuthLayout>
-          <Authentication />
-       </AuthLayout>
+      <AuthLayout>
+        <Authentication setUser={setUser} />
+      </AuthLayout>
     );
   } else {
     return (
       <MainLayout>
-        <CRM />
+        <CRM user={user}/>
       </MainLayout>
     );
   }

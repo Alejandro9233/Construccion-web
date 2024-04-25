@@ -1,4 +1,4 @@
-const db = require('../db/db');
+const db = require('../../db/db');
 
 // Obtener leaderboard de usuarios
 /* Arreglo de objetos en el siguiente formato:

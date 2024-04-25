@@ -1,4 +1,4 @@
-const db = require('../db/db');
+const db = require('../../db/db');
 
 // get conexiones por fecha
 async function getConexionesPorFecha(req, res) {

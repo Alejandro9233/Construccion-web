@@ -1,4 +1,4 @@
-const db = require('../db/db');
+const db = require('../../db/db');
 const mssql = require('mssql');
 
 // Actualizar datos de guardado

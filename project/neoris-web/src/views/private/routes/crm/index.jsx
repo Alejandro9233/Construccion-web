@@ -27,7 +27,7 @@ const Users = Loadable({
   loading: TopBarProgress,
 });
 
-const Dash = () => {
+const Dash = (user) => {
   if (user.type === "admin") {
     return (
       <Switch>

@@ -1,6 +1,6 @@
 //
 const router = require('express').Router();
-const perfilController = require('../controllers/perfil.controllers');
+const perfilController = require('../../controllers/web/perfil.controllers');
 
 // get promedio de avance en todos los cursos
 router.get('/promedio-avance/:id_user', perfilController.getAvance);

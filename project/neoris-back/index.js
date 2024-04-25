@@ -3,11 +3,14 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 
-// Importar rutas
-const routerUsuarios =  require('./routes/usuarios.routes');
-const routerDashboardAdmin = require('./routes/dashboard_admin.routes');
-const routerUnity = require('./routes/unity.routes');
-const routerPerfil = require('./routes/perfil.routes');
+// Importar rutas para la aplicación web
+const routerUsuarios =  require('./routes/unity/usuarios.routes');
+const routerUnity = require('./routes/unity/save-data.routes');
+
+// Importar rutas para unity
+const routerDashboardAdmin = require('./routes/web/dashboard_admin.routes');
+const routerPerfil = require('./routes/web/perfil.routes');
+const routerAutenticacion = require('./routes/web/autenticacion.routes');
 
 // Crear servidor
 const app = express();
@@ -22,6 +25,7 @@ app.use(routerUsuarios);
 app.use(routerDashboardAdmin);
 app.use(routerUnity);
 app.use(routerPerfil);
+app.use(routerAutenticacion);
 
 app.listen(5000, () => {
     console.log('Server is running on http://localhost:5000');
