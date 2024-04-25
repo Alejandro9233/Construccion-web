@@ -33,7 +33,7 @@ const GameAvgHoursChart = () => {
         justify={"space-between"}
         align={"middle"}
       >
-        <dix>
+        <div>
           <Row>
             <TrophyTwoTone style={{ fontSize: "40px" }} />
             <Col
@@ -48,7 +48,7 @@ const GameAvgHoursChart = () => {
               <StyledText>Unity Game</StyledText>
             </Col>
           </Row>
-        </dix>
+        </div>
         <Statistic
           title={null}
           value={3.5}
