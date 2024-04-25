@@ -10,7 +10,7 @@ const Private = () => {
 
   const [a] = useState(true);
 
-  if (a) {
+  if (!a) {
     return (
        <AuthLayout>
           <Authentication />
