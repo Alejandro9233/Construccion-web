@@ -139,7 +139,7 @@ const GameTrafficChart = () => {
             },
           ]}
           type="bar"
-          height={220}
+          height={250}
         />
       </div>
     </StyledDiv>

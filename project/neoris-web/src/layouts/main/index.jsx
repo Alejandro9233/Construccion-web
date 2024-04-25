@@ -31,7 +31,7 @@ const MainLayout = ({ children }) => {
           <Card
             style={{
               height: "96vh",
-              width: "90vw",
+              width: "100%",
               overflow: "auto",
               border: "none",
             }}

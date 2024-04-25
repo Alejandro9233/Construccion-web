@@ -18,7 +18,7 @@ const Sidebar = () => {
     await logout();
   };
   */
-  const { user } = { user: { name: "John Doe", type: "client" } };
+  const { user } = { user: { name: "John Doe", type: "admin" } };
 
   const [selectedKey, setSelectedKey] = useState(null);
 
@@ -101,7 +101,7 @@ const Sidebar = () => {
           marginBottom: 10,
         }}
       >
-        <Link to="/home">
+        <Link to="/users">
           <Text selected={selectedKey === "/users"}>Usuarios</Text>
         </Link>
       </Item>
