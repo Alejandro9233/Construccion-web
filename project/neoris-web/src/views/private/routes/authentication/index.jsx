@@ -18,7 +18,7 @@ const RecoverPasword = Loadable({
   loading: TopBarProgress,
 });
 
-const Auth = (setUser) => (
+const Auth = ({setUser}) => (
   <Switch>
     <Route path="/login">
       <Login setUser={setUser}/>
