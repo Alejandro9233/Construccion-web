@@ -15,29 +15,29 @@ const Login = (setUser) => {
   const [validation, setValidation] = useState([]);
 
 
-  useEffect(() => {
-    const fetchData = async () => {
-      await fetch("http://localhost:5000/verificar-usuario", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    })
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(data);
-      setValidation(data);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     await fetch("http://localhost:5000/verificar-usuario", {
+  //     method: "POST",
+  //     headers: {  
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(values),
+  //   })
+  //   .then((res) => res.json())
+  //   .then((data) => {
+  //     console.log(data);
+  //     setValidation(data);
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+  //   };
 
-    fetchData();
-    
-  }, [validation]);
-  // const preestablishedValues = {
+  //   fetchData();
+
+  // }, [validation]);
+  // // const preestablishedValues = {
   //   username: 'hola@gmail.com',
   //   password: 'hola',
   // };

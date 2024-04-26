@@ -4,7 +4,8 @@ const mssql = require('mssql');
 // Actualizar datos de guardado
 async function updateSaveData(req, res) {
     try {
-        const {jsonSaveData, id_user, coins, stars} = req.body;
+        const {jsonSaveData, coins, stars} = req.body;
+        const id_user = req.params.id_user;
         const pool = await db.getConnection();
         const result = await pool
         .request()
@@ -30,7 +31,7 @@ async function updateSaveData(req, res) {
 
 async function getSaveData(req, res) {
     try {
-        const id_user = req.params.user_id;
+        const id_user = req.params.id_user;
         const pool = await db.getConnection();
         const result = await pool
         .request()

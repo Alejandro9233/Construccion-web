@@ -2,8 +2,8 @@
 const unityController = require('../../controllers/unity/save-data.controllers');
 const router = require('express').Router();
 
-router.put('/save-data', unityController.updateSaveData);
+router.put('/save-data/:id_user', unityController.updateSaveData);
 
-router.get('/save-data/:user_id', unityController.getSaveData);
+router.get('/save-data/:id_user', unityController.getSaveData);
 
 module.exports = router;
