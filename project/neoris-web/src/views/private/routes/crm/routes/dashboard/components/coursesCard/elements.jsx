@@ -36,4 +36,3 @@ const StyledText = styled(Text)`
 `;
 
 export { StyledDiv, StyledTitle, StyledText };
-

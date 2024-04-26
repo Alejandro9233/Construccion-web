@@ -1,33 +1,99 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Divider, Checkbox, Input, Form } from "antd";
 import { useState } from "react";
 import { Button, Text, StyledLink, StyledFormItem } from "../elements";
+import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 
-const Login = () => {
+const Login = (setUser) => {
   const [login, setLoginDetails] = useState({ 
     email: "", 
     password: "" });
 
   const [error, setError] = useState(null);
   
-  const preestablishedValues = {
-    username: 'hola@gmail.com',
-    password: 'hola',
-  };
-  
-    const changeHandler = (e) => {
-      const { name, value } = e.target;
-      setLoginDetails((prevLogin) => ({
-        ...prevLogin,
-        [name]: value,
-      }));
+  // Información para la validación de datos en el login, contiene {"validación": bool, "es_admin": bool}
+  const [validation, setValidation] = useState([]);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetch("http://localhost:5000/verificar-usuario", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      setValidation(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
     };
 
-  const validateInputValues = (values) => {
-      if (values.email !== preestablishedValues.username || values.password !== preestablishedValues.password) {
-          return Promise.reject('Invalid username or password');
+    fetchData();
+    
+  }, [validation]);
+  // const preestablishedValues = {
+  //   username: 'hola@gmail.com',
+  //   password: 'hola',
+  // };
+  
+  const changeHandler = (e) => {
+    const { name, value } = e.target;
+    setLoginDetails((prevLogin) => ({
+      ...prevLogin,
+      [name]: value,
+    }));
+  };
+
+  // const validateInputValues = (values) => {
+  //     if (values.email !== preestablishedValues.username || values.password !== preestablishedValues.password) {
+  //         return Promise.reject('Invalid username or password');
+  //     }
+  //     return Promise.resolve();
+  // };
+
+  
+    const validateInputValues = (values) => { 
+      
+      fetch("http://localhost:5000/verificar-usuario", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setValidation(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+      
+      
+      if (validation.length === 0){
+        return Promise.reject('Invalid username or password');
       }
-      return Promise.resolve();
+      else if (validation[0].validacion === true && validation[0].es_admin === true){
+        return Promise.resolve();      
+      } 
+      else if (validation[0].validacion === true && validation[0].es_admin === false){
+        return Promise.resolve();      
+      } 
+      else if (validation[0].validacion === false){
+        return Promise.reject('Invalid username or password');
+      }
+      
+      // if (values.email !== preestablishedValues.username || values.password !== preestablishedValues.password) {
+      //     return Promise.reject('Invalid username or password');
+      // }
+      // return Promise.resolve();
   };
 
   const onFinish = (values) => {
