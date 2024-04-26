@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import MainLayout from "../../layouts/main";
 import AuthLayout from "../../layouts/auth";
@@ -6,9 +6,17 @@ import Authentication from "./routes/authentication";
 import CRM from "./routes/crm";
 
 const Private = () => {
-  //const location = useLocation();
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("user")) || null
+  );
 
-  const [user, setUser] = useState();
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("user");
+    }
+  }, [user]);
 
   if (!user) {
     return (
@@ -18,8 +26,8 @@ const Private = () => {
     );
   } else {
     return (
-      <MainLayout>
-        <CRM user={user}/>
+      <MainLayout user={user} setUser={setUser}>
+        <CRM user={user} />
       </MainLayout>
     );
   }

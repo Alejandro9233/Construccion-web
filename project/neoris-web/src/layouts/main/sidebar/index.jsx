@@ -1,26 +1,28 @@
-import React, { useState } from "react";
-import { Link, withRouter } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, withRouter, useHistory } from "react-router-dom";
 import { Image, Button, Divider } from "antd";
 import { Menu, Text, Container } from "./elements";
 import Logo from "./logo.png";
-import {
-  FundTwoTone,
-  HomeTwoTone,
-  IdcardTwoTone,
-  BookTwoTone,
-  PieChartTwoTone,
-} from "@ant-design/icons";
+import { IdcardTwoTone, BookTwoTone, PieChartTwoTone } from "@ant-design/icons";
 
 const { Item } = Menu;
 
-const Sidebar = () => {
-  /* const handleLogout = async () => {
-    await logout();
-  };
-  */
-  const { user } = { user: { name: "John Doe", type: "admin" } };
+const Sidebar = ({ user, setUser }) => {
+  const history = useHistory();
 
-  const [selectedKey, setSelectedKey] = useState(null);
+  const handleLogout = async () => {
+    await setUser("");
+    localStorage.removeItem("selectedKey");
+    history.push("/");
+  };
+
+  const [selectedKey, setSelectedKey] = useState(
+    localStorage.getItem("selectedKey")
+  );
+
+  useEffect(() => {
+    localStorage.setItem("selectedKey", selectedKey);
+  }, [selectedKey]);
 
   let routes = (
     <>
@@ -30,7 +32,7 @@ const Sidebar = () => {
         onClick={() => setSelectedKey("/profile")}
         style={{
           background:
-            selectedKey === "/profile"
+            selectedKey === "/profile" || selectedKey === "/"
               ? "linear-gradient(to top right, #90D7E7 60%, #108ee9)"
               : "none",
           paddingLeft: "30px",
@@ -73,7 +75,7 @@ const Sidebar = () => {
         onClick={() => setSelectedKey("/dashboard")}
         style={{
           background:
-            selectedKey === "/dashboard"
+            selectedKey === "/dashboard" || selectedKey === "/"
               ? "linear-gradient(to top right, #90D7E7 60%, #108ee9)"
               : "none",
           paddingLeft: "30px",
@@ -135,8 +137,10 @@ const Sidebar = () => {
           style={{
             background: "none",
           }}
+          defaultSelectedKeys={[history.location.pathname.toLowerCase()]}
+          selectedKeys={[history.location.pathname.toLowerCase()]}
         >
-          {user.type === "admin" ? routesAdmin : routes}
+          {user.es_admin ? routesAdmin : routes}
         </Menu>
       </div>
       <div
@@ -147,7 +151,7 @@ const Sidebar = () => {
           padding: "15px 0 ",
         }}
       >
-        <Button danger onClick={() => console.log("cerrar sesion")}>
+        <Button danger onClick={() => handleLogout()}>
           Cerrar Session
         </Button>
       </div>
