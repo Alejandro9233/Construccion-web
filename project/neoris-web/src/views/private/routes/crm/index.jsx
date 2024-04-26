@@ -30,7 +30,7 @@ const Dash = ({ user }) => {
     return (
       <Switch>
         <Route path="/dashboard">
-          <AdminDashboard />
+          <AdminDashboard user={user} />
         </Route>
         <Route path="/users">
           <Users />
@@ -42,10 +42,10 @@ const Dash = ({ user }) => {
   return (
     <Switch>
       <Route path="/profile">
-        <Profile />
+        <Profile user={user} />
       </Route>
       <Route path="/courses">
-        <Courses />
+        <Courses user={user} />
       </Route>
       <Redirect to="/profile" />
     </Switch>

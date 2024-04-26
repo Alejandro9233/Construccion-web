@@ -4,27 +4,26 @@ import { EllipsisOutlined } from "@ant-design/icons";
 import { StyledDiv, StyledImageDiv, StyledTitle, StyledText } from "./elements";
 import Cloud from "./cloud_done.png";
 
-const ProgressCard = () => {
+const ProgressCard = ({ user }) => {
   // conseguir promedio de usuario
   const [progress, setProgress] = useState([]);
 
+  console.log("user", user);
+
   useEffect(() => {
-
     const fetchData = async () => {
-      await fetch("http://localhost:5000/promedio-avance/1")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setProgress(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      await fetch(`http://localhost:5000/promedio-avance/${user?.id_usuario}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setProgress(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     };
-    
-    fetchData();
 
-  }, []);
+    fetchData();
+  }, [user]);
 
   const percentage = progress.length > 0 ? progress[0].porcentaje_promedio : 0;
 
@@ -55,7 +54,7 @@ const ProgressCard = () => {
       </div>
       <Progress
         style={{ width: "80%", marginTop: "8%" }}
-        percent= {percentage}
+        percent={percentage}
         status="active"
         strokeColor={{
           from: "#90D7E7",

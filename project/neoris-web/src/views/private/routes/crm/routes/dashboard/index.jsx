@@ -6,7 +6,7 @@ import CoursesCard from "./components/coursesCard";
 import InfoCard from "./components/infoCard";
 import { Row, Col } from "antd";
 
-const Profile = () => {
+const Profile = ({ user }) => {
   return (
     <Container>
       <Col style={{ width: "100%" }}>
@@ -22,7 +22,7 @@ const Profile = () => {
             <ProfileCard />
           </Col>
           <Col style={{ width: "60%", marginRight: "7vw" }}>
-            <ProgressCard />
+            <ProgressCard user={user} />
           </Col>
         </Row>
         <Row
