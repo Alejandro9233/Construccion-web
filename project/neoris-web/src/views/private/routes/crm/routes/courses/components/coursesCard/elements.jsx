@@ -25,7 +25,7 @@ const StyledText = styled(Text)`
         margin-top: 3px;
     }
 
-    &.duration {
+    &.subtitle {
         color: #A3AED0;
         font-family: "DM Sans";
         font-size: 14px;

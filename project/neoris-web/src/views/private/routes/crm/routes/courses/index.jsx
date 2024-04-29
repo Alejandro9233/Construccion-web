@@ -4,7 +4,7 @@ import CoursesCard from "./components/coursesCard";
 
 
 
-const Courses = () => {
+const Courses = ({user}) => {
   return (
     <div style={{
       display: 'flex',
@@ -14,7 +14,7 @@ const Courses = () => {
      
     }}>
       <Menu/>
-      <CoursesCard/>
+      <CoursesCard user={user}/>
     </div>
   );
 };

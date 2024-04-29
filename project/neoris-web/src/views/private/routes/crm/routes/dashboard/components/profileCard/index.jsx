@@ -1,19 +1,54 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Image, Row, Col } from "antd";
 import backgroundImg from "./ProfileBg.png";
 import { StyledDiv, StyledImageDiv, StyledTitle, StyledText } from "./elements";
 
-const ProfileCard = () => {
+const ProfileCard = ({user}) => {
+  // Use state para guardar los datos del perfil del usuario y use effect para hacer fetch a la api y obtener los datos
+  // Contenidos de profileData: {cursos_inscritos, neo_stars, neo_coins}
+  const [profileData, setProfileData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetch(`http://localhost:5000/profile-card/${user?.id_usuario}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setProfileData(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+    fetchData();
+  }, [user]);
+
+  // Obtener los datos del perfil del usuario de la respuesta de la api para usarlos dentro del componente
+  const enrolled_courses = profileData.length > 0 ? profileData[0].cursos_inscritos : 0;
+  const neo_stars = profileData.length > 0 ? profileData[0].neo_stars : 0;
+  const neo_coins = profileData.length > 0 ? profileData[0].neo_coins : 0;
+  
+  // Función para formatear las neo_coins,
+  function formatNumber(number) {
+    return Math.abs(Number(number)) >= 1.0e+9
+      ? (Math.abs(Number(number)) / 1.0e+9).toFixed(1) + "B"
+      : Math.abs(Number(number)) >= 1.0e+6
+      ? (Math.abs(Number(number)) / 1.0e+6).toFixed(1) + "M"
+      : Math.abs(Number(number)) >= 1.0e+3
+      ? (Math.abs(Number(number)) / 1.0e+3).toFixed(1) + "K"
+      : Math.abs(Number(number));
+  }
+  
   return (
     <StyledDiv>
       <Image preview={false} src={backgroundImg} style={{ zIndex: 1 }} />
       <StyledImageDiv>
         <Image
-          style={{ borderRadius: "50%", width: "5vw" }}
+          style={{ borderRadius: "50%", width: "5vw", aspectRatio: "1/1", objectFit: "cover" }}
           preview={false}
           src={
-            "https://imageio.forbes.com/specials-images/imageserve/5ed00f17d4a99d0006d2e738/0x0.jpg?format=jpg&crop=4666,4663,x154,y651,safe&height=416&width=416&fit=bounds"
+            user?.foto_de_perfil ? user.foto_de_perfil : "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"
           }
         />
       </StyledImageDiv>
@@ -24,8 +59,8 @@ const ProfileCard = () => {
           alignItems: "center",
         }}
       >
-        <StyledTitle>Sandro Castore</StyledTitle>
-        <StyledText>Senior Developer</StyledText>
+        <StyledTitle>{user.nombre_usuario}</StyledTitle>
+        <StyledText>{user.puesto}</StyledText>
       </div>
       <Row
         gutter={[16, 16]}
@@ -42,7 +77,7 @@ const ProfileCard = () => {
             alignItems: "center",
           }}
         >
-          <StyledTitle>8</StyledTitle>
+          <StyledTitle>{enrolled_courses}</StyledTitle>
           <StyledText>Courses</StyledText>
         </Col>
         <Col
@@ -53,8 +88,8 @@ const ProfileCard = () => {
             alignItems: "center",
           }}
         >
-          <StyledTitle>9.7K</StyledTitle>
-          <StyledText>Coins</StyledText>
+          <StyledTitle>{formatNumber(neo_coins)}</StyledTitle>
+          <StyledText>Neo Coins</StyledText>
         </Col>
         <Col
           span={8}
@@ -64,8 +99,8 @@ const ProfileCard = () => {
             alignItems: "center",
           }}
         >
-          <StyledTitle>274</StyledTitle>
-          <StyledText>XP</StyledText>
+          <StyledTitle>{neo_stars}</StyledTitle>
+          <StyledText>Neo Stars</StyledText>
         </Col>
       </Row>
     </StyledDiv>

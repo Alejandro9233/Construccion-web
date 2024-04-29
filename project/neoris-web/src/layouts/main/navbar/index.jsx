@@ -7,7 +7,7 @@ import {
   MoonOutlined,
 } from "@ant-design/icons";
 
-const Navbar = () => {
+const Navbar = ({user}) => {
   return (
     <Nav>
       <Col>
@@ -35,7 +35,7 @@ const Navbar = () => {
         />
         <ProfilePicture
           src={
-            "https://imageio.forbes.com/specials-images/imageserve/5ed00f17d4a99d0006d2e738/0x0.jpg?format=jpg&crop=4666,4663,x154,y651,safe&height=416&width=416&fit=bounds"
+            user?.foto_de_perfil ? user.foto_de_perfil : "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"
           }
         />
       </Container>

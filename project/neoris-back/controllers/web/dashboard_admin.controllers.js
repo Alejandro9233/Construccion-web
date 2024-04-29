@@ -10,7 +10,7 @@ async function getConexionesPorFecha(req, res) {
         console.error('Error fetching conexiones por fecha:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     } finally {
-        db.closeConnection();
+        await db.closeConnection();
     }
 }
 
@@ -24,7 +24,7 @@ async function getCursosPopulares(req, res) {
         console.error('Error fetching cursos populares:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     } finally {
-        db.closeConnection();
+        await db.closeConnection();
     }
 }
 
@@ -38,7 +38,7 @@ async function getHorasJuegoPromedioPorFecha(req, res) {
         console.error('Error fetching horas de juego promedio por fecha:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     } finally {
-        db.closeConnection();
+        await db.closeConnection();
     }
 }
 
@@ -52,7 +52,7 @@ async function getPromedioTotalProgreso(req, res) {
         console.error('Error fetching promedio total progreso:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     } finally {
-        db.closeConnection();
+        await db.closeConnection();
     }
 }
 
@@ -66,7 +66,7 @@ async function getUsuariosNoAdmins(req, res) {
         console.error('Error fetching usuarios no admins:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     } finally {
-        db.closeConnection();
+        await db.closeConnection();
     }
 }
 

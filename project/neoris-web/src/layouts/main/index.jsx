@@ -32,7 +32,7 @@ const MainLayout = ({ children, user, setUser }) => {
             background: "#FFF",
           }}
         >
-          <Navbar />
+          <Navbar user={user}/>
           <Card
             style={{
               height: "96vh",

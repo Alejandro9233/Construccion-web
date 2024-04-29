@@ -8,11 +8,10 @@ import "./index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <Router basename="/">
-        <App />
-      </Router>
-    </ThemeProvider>
-  </React.StrictMode>
+  // Le quité el React.StrictMode porque corría los useEffect dos veces
+  <ThemeProvider theme={theme}>
+    <Router basename="/">
+      <App />
+    </Router>
+  </ThemeProvider>
 );

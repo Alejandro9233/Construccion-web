@@ -1,24 +1,40 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { Image, Button } from 'antd';
 import { HeartOutlined, HeartFilled } from '@ant-design/icons';
-import genAiCurso from './genAiCurso.jpg';
 import { StyledDiv, StyledText } from './elements';
 
-
-const CourseCard = ({course}) => {
+const CourseCard = ({course, user}) => {
   const [isFilled, setIsFilled] = useState(false);
 
   const handleClick = () => {
     setIsFilled(!isFilled);
   };
   
+  const handleButtonClick = () => {
+    window.open(course.link_al_curso, '_blank');
+  };
+
+  // Falta implementar la actualización del progreso del curso con algún input
+  const updateProgress = async () => {
+    if(course.porcentaje_progreso){
+      console.log('Course progress updated');
+      course.porcentaje_progreso = 1;
+    }
+    else if(!course.porcentaje_progreso){
+      console.log('Course progress created');
+      course.porcentaje_progreso = 1;
+    }
+
+  };
+
   return (
 
     <StyledDiv>
-      <Image src={course.image} preview={false} width={350} style={{ borderRadius: "20px" }} alt="" />
-      <StyledText className='title'>{course.title}</StyledText>
-      <StyledText className='duration'>Duration: {course.duration}</StyledText>
+      <Image src={course.imagen} preview={false} width={350} height={200} style={{ borderRadius: "20px" }} alt="" />
+      <StyledText className='title'>{course.nombre_curso}</StyledText>
+      <StyledText className='subtitle'>Duration: {course.duracion} hours</StyledText>
+      <StyledText className='subtitle'>Progress: {course?.porcentaje_progreso ? course.porcentaje_progreso + "%" : "Course hasn't been started yet"}</StyledText>
       <div style={{
         display: "flex",
         flexDirection: "row",
@@ -33,7 +49,12 @@ const CourseCard = ({course}) => {
         justifyItems: "center",
         alignItems: "center",
       }}> {isFilled ? <HeartFilled /> : <HeartOutlined />}</Button>
-      <Button type="primary" style={{background:'black', borderRadius:'10px'}}>
+      <Button type="primary" style={{background:'black', borderRadius:'10px'}} onClick={updateProgress}>
+        <StyledText style={{ color:'white' }}>
+          Change progress
+        </StyledText>
+      </Button>      
+      <Button type="primary" style={{background:'black', borderRadius:'10px'}} onClick={handleButtonClick}>
         <StyledText style={{ color:'white' }}>
           See course details
         </StyledText>
@@ -43,101 +64,42 @@ const CourseCard = ({course}) => {
   
 )}
 
-const courses = [
-  {
-    id: 1,
-    course: "Certificacion de Gen AI",
-    image: genAiCurso,  
-    title: "Chat GPT Prompt Engineering",
-    duration: "1 minute",
-    isFavorite: false,
-  },
+const CoursesCard = ({user}) => {
+  // Fetch para conseguir los cursos inscritos por el usuario y los no inscritos por el usuario
+  // Contenidos de cursos: path_de_curso, nombre_curso, imagen, link_al_curso, es_favorito, duracion, porcentaje_progreso
+  const [courses, setCourses] = useState([]);
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetch(`http://localhost:5000/cursos-inscritos-usuario/${user?.id_usuario}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setCourses(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
 
-  {
-    id: 2,
-    course: "Certificacion de Gen AI",
-    image: genAiCurso,
-    title: "Github Copilot",
-    duration: "1 day",
-    isFavorite: false,
-  },
-  { 
-    id: 3,
-    course: "Certificacion de Gen AI",
-    image: genAiCurso, 
-    title: "Github Advanced Security", 
-    duration: "100 years",
-    isFavorite: false, 
-  },
-  { 
-    id: 4,
-    course: "Certificacion de Gen AI",
-    image: genAiCurso, 
-    title: "GenAI", 
-    duration: "100 years",
-    isFavorite: false, 
-  },
-  { 
-    id: 5,
-    course: "Certificacion de Gen AI",
-    image: genAiCurso, 
-    title: "GenAI Fundamentals", 
-    duration: "100 years",
-    isFavorite: false,
-  },
-  {
-    id: 6,
-    course: "Certificacion de Gen AI 2",
-    image: genAiCurso,  
-    title: "Chat GPT Prompt Engineering",
-    duration: "1 minute",
-    isFavorite: false,
-  },
+    fetchData();
+  }, [user]);
 
-  {
-    id: 7,
-    course: "Certificacion de Gen AI 2",
-    image: genAiCurso,
-    title: "Github Copilot",
-    duration: "1 day",
-    isFavorite: false,
-  },
-  { 
-    id: 8,
-    course: "Certificacion de Gen AI 2",
-    image: genAiCurso, 
-    title: "Github Advanced Security", 
-    duration: "100 years",
-    isFavorite: false, 
-  },
-  { 
-    id: 9,
-    course: "Certificacion de Gen AI 2",
-    image: genAiCurso, 
-    title: "GenAI", 
-    duration: "100 years",
-    isFavorite: false, 
-  },
-];
-
-
-const CoursesCard = () => {
   const groupedCourses = courses.reduce((acc, course) => {
-    if (!acc[course.course]) {
-      acc[course.course] = [];
+    if (!acc[course.path_de_curso]) {
+      acc[course.path_de_curso] = [];
     }
-    acc[course.course].push(course);
+    acc[course.path_de_curso].push(course);
     return acc;
   }, {});
 
   return (
-     <div>
+    <div>
       {Object.entries(groupedCourses).map(([courseName, courseList]) => (
         <div key={courseName}>
-          <StyledText className='title'>{courseName}</StyledText>
+          <StyledText className='title'>Path: {courseName}</StyledText>
           <div style={{ display: 'flex', overflowX: 'auto' }}>
             {courseList.map((course, index) => (
-              <CourseCard key={index} course={course} />
+              <CourseCard key={index} course={course} user={user}/>
             ))}
           </div>
         </div>
