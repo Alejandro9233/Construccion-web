@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect} from "react";
 import { StyledDiv, StyledTitle, StyledText } from "./elements";
 import { Row, Col, Image, Tooltip, Button } from "antd";
 import { AlertTwoTone, ArrowRightOutlined } from "@ant-design/icons";
@@ -16,14 +16,14 @@ const getStatusColor = (status) => {
   }
 };
 
-const UserCard = ({ imgSrc, name, time, status }) => (
+const UserCard = ({ foto_de_perfil, nombre_usuario, puesto }) => (
   <div style={{ width: "100%" }}>
     <Row justify={"space-between"} align={"middle"}>
       <Row align={"middle"}>
         <Image
           preview={false}
-          src={imgSrc}
-          style={{ width: "40px", height: "40px", borderRadius: "50%" }}
+          src={foto_de_perfil ? foto_de_perfil : "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"}
+          style={{ borderRadius: "50%", width: "3vw", aspectRatio: "1/1", objectFit: "cover" }}
         />
         <Col
           style={{
@@ -34,13 +34,13 @@ const UserCard = ({ imgSrc, name, time, status }) => (
             height: "80%",
           }}
         >
-          <StyledTitle style={{ fontSize: "16px" }}>{name}</StyledTitle>
-          <StyledText>{time}</StyledText>
+          <StyledTitle style={{ fontSize: "16px" }}>{nombre_usuario}</StyledTitle>
+          <StyledText>{puesto}</StyledText>
         </Col>
       </Row>
-      <Tooltip title={`Status: ${status}`}>
+      <Tooltip title={`Status: `}>
         <AlertTwoTone
-          twoToneColor={getStatusColor(status)}
+          // twoToneColor={getStatusColor(status)}
           style={{ fontSize: "20px" }}
         />
       </Tooltip>
@@ -48,40 +48,25 @@ const UserCard = ({ imgSrc, name, time, status }) => (
   </div>
 );
 
-const TeamView = () => {
-  const teamMembers = [
-    {
-      imgSrc: "https://i.ibb.co/8b3YB8L/Rectangle-1.png",
-      name: "Felix Gutierrez",
-      time: "Today, 16:36",
-      status: "Ok",
-    },
-    {
-      imgSrc: "https://i.ibb.co/8b3YB8L/Rectangle-2.png",
-      name: "Maria Rodriguez",
-      time: "Today, 15:30",
-      status: "Busy",
-    },
-    {
-      imgSrc: "https://i.ibb.co/8b3YB8L/Rectangle-3.png",
-      name: "Carlos Hernandez",
-      time: "Today, 14:20",
-      status: "Away",
-    },
-    {
-      imgSrc: "https://i.ibb.co/8b3YB8L/Rectangle-4.png",
-      name: "Ana Martinez",
-      time: "Today, 13:10",
-      status: "Ok",
-    },
-    {
-      imgSrc: "https://i.ibb.co/8b3YB8L/Rectangle-4.png",
-      name: "Ana Martinez",
-      time: "Today, 13:10",
-      status: "Ok",
-    },
-    // Agrega más miembros del equipo aquí
-  ];
+const TeamView = ({user}) => {
+  // Use state para guardar los ususarios que no son admins y no están eliminados
+  // Datos de respuesta: nombre_usuario, foto_de_perfil, puesto
+  const [teamUsers, setTeamUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetch(`http://localhost:5000/usuarios-no-admins`)
+        .then((res) => res.json())
+        .then((data) => {
+          setTeamUsers(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+  fetchData();
+
+  }, [user]);
 
   return (
     <StyledDiv>
@@ -90,7 +75,7 @@ const TeamView = () => {
         style={{ width: "100%", marginTop: "10px" }}
         justify={"space-between"}
       >
-        {teamMembers.slice(0, 4).map((member, index) => (
+        {teamUsers?.slice(0, 4).map((member, index) => (
           <UserCard key={index} {...member} />
         ))}
       </Row>

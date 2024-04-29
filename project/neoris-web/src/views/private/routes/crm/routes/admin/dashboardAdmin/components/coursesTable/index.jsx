@@ -1,93 +1,64 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { StyledDiv, StyledTitle, StyledTable, StyledText } from "./elements";
 import { Button } from "antd";
 import { ArrowRightOutlined, CheckCircleTwoTone } from "@ant-design/icons";
 
-const CoursesTable = () => {
+const CoursesTable = ({user}) => {
   const columns = [
     {
       title: <StyledText>Course Name</StyledText>,
       align: "left",
-      key: "name",
+      key: "curso",
 
       render: (row) => {
-        return <StyledTitle>{row?.name}</StyledTitle>;
+        return <StyledTitle>{row?.curso}</StyledTitle>;
       },
     },
     {
-      title: <StyledText>Views</StyledText>,
-      key: "views",
+      title: <StyledText>Enrolled Users</StyledText>,
+      align: "center",
+      key: "enrolled users",
 
-      render: (row) => <StyledTitle>{row?.views}</StyledTitle>,
+      render: (row) => <StyledTitle>{row?.usuarios_inscritos}</StyledTitle>,
     },
     {
-      title: <StyledText>Started</StyledText>,
-      align: "left",
-      key: "started",
+      title: <StyledText>Average Progress</StyledText>,
+      align: "center",
+      key: "average progress",
 
-      render: (row) => <StyledTitle>{row?.started}</StyledTitle>,
+      render: (row) => <StyledTitle>{row?.porcentaje_progreso_promedio + "%"}</StyledTitle>,
     },
     {
       title: <StyledText>Completed</StyledText>,
-      align: "left",
+      align: "right",
       key: "completed",
 
       render: (row) => (
         <StyledTitle style={{ color: "#87d068" }}>
           {" "}
-          <CheckCircleTwoTone twoToneColor="#87d068" /> {row?.completed}
+          <CheckCircleTwoTone twoToneColor="#87d068" /> {row?.cursos_completados}
         </StyledTitle>
       ),
-    },
-    {
-      title: <StyledText>Bounce Rate</StyledText>,
-      align: "right",
-      key: "abandoned",
-
-      render: (row) => (
-        <StyledTitle style={{ color: "#90D7E7" }}>
-          {row?.abandoned} %
-        </StyledTitle>
-      ),
-    },
+    }    
   ];
 
-  const fakeData = [
-    {
-      id: 1,
-      name: "Curso 1",
-      views: 100,
-      started: 50,
-      completed: 20,
-      abandoned: 30,
-    },
-    {
-      id: 2,
-      name: "Curso 2",
-      views: 200,
-      started: 100,
-      completed: 50,
-      abandoned: 50,
-    },
-    {
-      id: 3,
-      name: "Curso 3",
-      views: 300,
-      started: 150,
-      completed: 75,
+  // Use state para guardar los cursos y use effect para fetchearlos
+  // Datos de respuesta: curso, usuarios_inscritos, porcentaje_progreso_promedio, cursos_completados
+  const [popularCourses, setPopularCourses] = useState([]);
 
-      abandoned: 75,
-    },
-    {
-      id: 4,
-      name: "Curso 4",
-      views: 400,
-      started: 200,
-      completed: 100,
-      abandoned: 100,
-    },
-    // Agrega más datos falsos aquí si lo deseas
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetch(`http://localhost:5000/cursos-populares`)
+        .then((res) => res.json())
+        .then((data) => {
+          setPopularCourses(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+  fetchData();
+  }, [user]);
 
   return (
     <StyledDiv>
@@ -109,7 +80,7 @@ const CoursesTable = () => {
         style={{
           width: "100%",
         }}
-        dataSource={fakeData.slice(0, 4)} // Usa los datos falsos
+        dataSource={popularCourses?.slice(0, 4)}
         columns={columns}
         rowKey="id"
         scroll="hidden"
