@@ -7,7 +7,7 @@ import CoursesProgressChart from "./components/coursesProgressChart";
 import TeamView from "./components/teamView";
 import CoursesTable from "./components/coursesTable";
 
-const DashboardAdmin = () => {
+const DashboardAdmin = ({user}) => {
   return (
     <Container>
       <Col style={{ width: "100%" }}>
@@ -20,13 +20,13 @@ const DashboardAdmin = () => {
           }}
         >
           <Col style={{ width: "31%" }}>
-            <GameTrafficChart />
+            <GameTrafficChart user={user}/>
           </Col>
           <Col style={{ width: "31%" }}>
-            <GameAvgHoursChart />
+            <GameAvgHoursChart user={user}/>
           </Col>
           <Col style={{ width: "31%" }}>
-            <CoursesProgressChart />
+            <CoursesProgressChart user={user}/>
           </Col>
         </Row>
         <Row
@@ -39,10 +39,10 @@ const DashboardAdmin = () => {
           }}
         >
           <Col style={{ width: "31%" }}>
-            <TeamView />
+            <TeamView user={user}/>
           </Col>
           <Col style={{ width: "65%" }}>
-            <CoursesTable />
+            <CoursesTable user={user}/>
           </Col>
         </Row>
       </Col>

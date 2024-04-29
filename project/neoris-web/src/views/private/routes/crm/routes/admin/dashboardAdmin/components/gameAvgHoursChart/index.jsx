@@ -1,29 +1,41 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyledDiv, StyledTitle, StyledText } from "./elements";
 import { Row, Col, Statistic } from "antd";
 import { TrophyTwoTone } from "@ant-design/icons";
 import ReactApexChart from "react-apexcharts";
 
-// Función para generar un número aleatorio entre min y max
-const getRandomInt = (min, max) => {
-  return Math.floor(Math.random() * (max - min)) + min;
-};
+const GameAvgHoursChart = ({user}) => {
+  // Use state para guardar las horas promedio dentro del juego por fecha
+  // Datos de respuesta: fecha, promedio_horas_de_juego
+  const [data, setData] = useState([]);
 
-// Función para generar los últimos siete días
-const getLastSevenDays = () => {
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const lastSevenDays = [];
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date();
-    d.setDate(d.getDate() - i);
-    lastSevenDays.push(days[d.getDay()]);
-  }
-  return lastSevenDays;
-};
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetch(`http://localhost:5000/horas-juego-por-fecha`)
+        .then((res) => res.json())
+        .then((data) => {
+          setData(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
 
-const GameAvgHoursChart = () => {
-  // Generar datos falsos para el gráfico
-  const fakeData = Array.from({ length: 7 }, () => getRandomInt(1, 10));
+  fetchData();
+  }, [user]);
+
+  // conseguir los arreglos de los ejes verticales y horizontales para las tablas
+  let dates = data ? data.map((item) => item.fecha) : [];
+  let hours = data ? data.map((item) => item.promedio_horas_de_juego) : [];
+
+  // función para quitarle la hora a las fechas
+  function formatDate(dates) {
+    let formattedDates = [];
+    dates.forEach(date => {
+      formattedDates.push(date.split("T").shift());
+    });
+    return formattedDates;
+  };
 
   return (
     <StyledDiv>
@@ -44,12 +56,12 @@ const GameAvgHoursChart = () => {
                 alignItems: "center",
               }}
             >
-              <StyledTitle style={{ fontSize: "16px" }}>Today</StyledTitle>
+              <StyledTitle style={{ fontSize: "16px" }}>Last Week</StyledTitle>
               <StyledText>Unity Game</StyledText>
             </Col>
           </Row>
         </div>
-        <Statistic
+        {/* <Statistic
           title={null}
           value={3.5}
           precision={2}
@@ -58,7 +70,7 @@ const GameAvgHoursChart = () => {
             fontSize: "24px",
           }}
           suffix="hrs"
-        />
+        /> */}
       </Row>
       <div style={{ width: "100%", marginTop: "10px" }}>
         <ReactApexChart
@@ -98,9 +110,8 @@ const GameAvgHoursChart = () => {
                 show: false,
               },
             },
-
             xaxis: {
-              categories: getLastSevenDays(),
+              categories: formatDate(dates),
               labels: {
                 show: true,
                 align: "right",
@@ -130,8 +141,8 @@ const GameAvgHoursChart = () => {
           }}
           series={[
             {
-              name: "Promdio de Horas Jugadas",
-              data: fakeData,
+              name: "Average Hours in Game",
+              data: hours,
               color: "#90D7E7",
             },
           ]}
