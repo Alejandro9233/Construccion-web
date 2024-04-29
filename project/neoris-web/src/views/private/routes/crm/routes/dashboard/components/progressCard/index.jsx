@@ -5,10 +5,9 @@ import { StyledDiv, StyledImageDiv, StyledTitle, StyledText } from "./elements";
 import Cloud from "./cloud_done.png";
 
 const ProgressCard = ({ user }) => {
-  // conseguir promedio de usuario
+  // Use state para guardar el progreso promedio de los cursos inscritos y use effect para hacer fetch a la api y obtener el progreso
+  // Contenidos de progress: {porcentaje_promedio}
   const [progress, setProgress] = useState([]);
-
-  console.log("user", user);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,6 +24,7 @@ const ProgressCard = ({ user }) => {
     fetchData();
   }, [user]);
 
+  // Obtener el porcentaje promedio de los cursos inscritos de la respuesta de la api para usarlos dentro del componente
   const percentage = progress.length > 0 ? progress[0].porcentaje_promedio : 0;
 
   return (
@@ -49,7 +49,7 @@ const ProgressCard = ({ user }) => {
       >
         <StyledTitle>Your Progress</StyledTitle>
         <StyledText>
-          The easiest way to look at your currently course progress
+          The easiest way to look at your average progress of all currently enrolled courses.
         </StyledText>
       </div>
       <Progress

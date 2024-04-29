@@ -1,10 +1,8 @@
 
 import React, { useEffect, useState } from "react";
-import { Image, Row, Col, Button } from "antd";
+import { Image, Row, Col, Button, Switch } from "antd";
 import { EditOutlined } from "@ant-design/icons";
-
 import { StyledDiv, StyledTitle, StyledText } from "./elements";
-import CourseImg from "./course_img.png";
 
 const CourseCard = ({ course }) => (
   <StyledDiv style={{ marginTop: "20px", padding: "10px 10px" }}>
@@ -24,9 +22,10 @@ const CourseCard = ({ course }) => (
         }}
       >
         <Image
-          src={course.image}
+          src={course.imagen}
           preview={false}
           width={70}
+          height={40}
           style={{ borderRadius: "10px" }}
           alt=""
         />
@@ -47,10 +46,10 @@ const CourseCard = ({ course }) => (
               fontWeight: "500",
             }}
           >
-            {course.title}
+            {course.nombre_curso}
           </StyledTitle>
           <div style={{ marginTop: "-10px" }}>
-            <StyledText>{course.subtitle}</StyledText>
+            <StyledText>{course.path_de_curso}</StyledText>
             <Button style={{ border: "none", padding: 0, marginLeft: "10px" }}>
               <StyledText
                 style={{ color: "#90D7E7", textDecoration: "underline" }}
@@ -80,39 +79,29 @@ const CourseCard = ({ course }) => (
   </StyledDiv>
 );
 
-const courses = [
-  {
-    image: CourseImg,
-    title: "Technology behind the Blockchain",
-    subtitle: "#Course 1",
-  },
-
-  {
-    image: CourseImg,
-    title: "Greatest way to a good Economy",
-    subtitle: "#Course 2",
-  },
-  { image: CourseImg, title: "The Art of the Deal", subtitle: "#Course 3" },
-];
-
-const CoursesCard = () => {
+const CoursesCard = ({user}) => {
   const text =
     "Here you can find more details about your courses. Keep yourself engaged by providing meaningful information.";
 
-  // const [courses, setCourses] = useState([]);
+  // Use state para guardar el listado de cursos y use effect para hacer fetch a la api y obtener los cursos
+  // Contenidos de courses: {nombre_curso, path_de_curso, imagen}
+  const [courses, setCourses] = useState([]);
 
-  // useEffect(() => {
-  //   fetch("http://localhost:5000/listado-cursos-web")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //       setCourses(data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
-  
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetch(`http://localhost:5000/listado-cursos-web-card`)
+        .then((res) => res.json())
+        .then((data) => {
+            setCourses(data);  
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+    fetchData();
+  }, [user]);
+
   return (
     <StyledDiv>
       <StyledTitle>All Courses</StyledTitle>

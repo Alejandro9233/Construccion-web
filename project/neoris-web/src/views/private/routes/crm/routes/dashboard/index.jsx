@@ -19,7 +19,7 @@ const Profile = ({ user }) => {
           }}
         >
           <Col style={{ width: "30%" }}>
-            <ProfileCard />
+            <ProfileCard user={user}/>
           </Col>
           <Col style={{ width: "60%", marginRight: "7vw" }}>
             <ProgressCard user={user} />
@@ -35,10 +35,10 @@ const Profile = ({ user }) => {
           }}
         >
           <Col style={{ width: "30%" }}>
-            <CoursesCard />
+            <CoursesCard user={user}/>
           </Col>
           <Col style={{ width: "60%", marginRight: "7vw" }}>
-            <InfoCard />
+            <InfoCard user={user}/>
           </Col>
         </Row>
       </Col>

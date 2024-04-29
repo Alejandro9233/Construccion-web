@@ -42,17 +42,16 @@ const InfoElement = ({ infoArray }) => {
   );
 };
 
-const InfoCard = () => {
+const InfoCard = ({user}) => {
   const description =
-    "As we live, our hearts turn colder. Cause pain is what we go through as we become older. We get insulted by others, lose trust for those others. We get back stabbed by friends. It becomes harder for us to give others a hand. We get our heart broken by people we love, even that we give them all...";
-
+    "The easiest way to look at your general information working at Neoris and contact details.";
   const infoArray = [
-    { title: "Education", content: "TEC University" },
-    { title: "Languages", content: "English, Spanish, Italian" },
-    { title: "Department", content: "Product Design" },
-    { title: "Work History", content: "FEMSA, CEMEX" },
+    { title: "E-mail", content: user.e_mail},
+    { title: "Chat", content: user.e_mail},
+    { title: "Location", content: user.ubicacion },
     { title: "Organization", content: "Neoris" },
-    { title: "Birthday", content: "20 July 2000" },
+    { title: "Department", content: user.departamento },
+    { title: "Job Position", content: user.puesto },
   ];
 
   return (
