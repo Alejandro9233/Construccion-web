@@ -19,4 +19,7 @@ router.post('/crear-progreso-curso/:id_user/:id_course/:new_progress', cursosUsu
 
 router.put('/actualizar-progreso-curso/:id_user/:id_course/:new_progress', cursosUsuarioControllers.actualizarProgresoCurso);
 
+// is_favorite se pone con un booleano: 0 o 1
+router.put('/actualizar-favorito/:id_user/:id_course/:is_favorite', cursosUsuarioControllers.actualizarCursoEsFavorito);
+
 module.exports = router;

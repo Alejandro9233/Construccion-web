@@ -16,9 +16,10 @@ router.get('/promedio-avance/:id_user', perfilController.getAvance);
     "path_de_curso": "Generative AI",
     "nombre_curso": "Chat GPT for Python",
     "imagen": "https://i.blogs.es/1d8a5b/python1/450_1000.jpg"
+    "link_al_curso": "URL"
 }
 */
-router.get('/listado-cursos-web-card', perfilController.getListadoCursosWebCard);
+router.get('/listado-cursos-web-card/:id_user', perfilController.getListadoCursosWebCard); // nuevo
 
 // get profile card
 /* Formato esperado de respuesta:

@@ -22,7 +22,10 @@ async function getAvance(req, res) {
 async function getListadoCursosWebCard(req, res) {
     try {
         const pool = await db.getConnection();
-        const result = await pool.request().query('EXEC listado_cursos_web_card;');
+        const result = await pool
+        .request()
+        .input('id_user', mssql.Int, req.params.id_user)
+        .query('EXEC listado_cursos_web_card @id_usuario = @id_user;');
         res.json(result.recordset);
     } catch (error) {
         console.error('Error fetching listado cursos:', error);
