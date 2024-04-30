@@ -93,12 +93,12 @@ const CoursesCard = ({ user }) => {
     "Here you can find more details about your courses. Keep yourself engaged by providing meaningful information.";
 
   // Use state para guardar el listado de cursos y use effect para hacer fetch a la api y obtener los cursos
-  // Contenidos de courses: {nombre_curso, path_de_curso, imagen}
+  // Contenidos de courses: {nombre_curso, path_de_curso, imagen, link_al_curso}
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetch(`http://localhost:5000/listado-cursos-web-card`)
+      await fetch(`http://localhost:5000/listado-cursos-web-card/${user?.id_usuario}`)
         .then((res) => res.json())
         .then((data) => {
           setCourses(data);
@@ -113,7 +113,7 @@ const CoursesCard = ({ user }) => {
 
   return (
     <StyledDiv>
-      <StyledTitle>All Courses</StyledTitle>
+      <StyledTitle>Your Courses</StyledTitle>
       <div style={{ marginTop: "20px" }} />
       <StyledText>{text}</StyledText>
       <div
