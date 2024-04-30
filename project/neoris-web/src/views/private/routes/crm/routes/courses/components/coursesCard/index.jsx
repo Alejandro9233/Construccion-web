@@ -44,6 +44,7 @@ const ChangeProgressModal = ({
   };
   const handleCancel = () => {
     setVisible(false);
+    setProgress(course.porcentaje_progreso);
   };
 
   return (
@@ -79,11 +80,31 @@ const ChangeProgressModal = ({
 };
 
 const CourseCard = ({ course, user, refetch }) => {
-  const [isFilled, setIsFilled] = useState(false);
+  const [isFilled, setIsFilled] = useState(course?.favorite);
   const [visible, setVisible] = useState(false);
 
-  const handleClick = () => {
-    setIsFilled(!isFilled);
+  const handleClick = async () => {
+    try {
+      const newIsFilled = !isFilled;
+      setIsFilled(newIsFilled);
+      const response = await fetch(
+        `http://localhost:5000/actualizar-favorito/${user?.id_usuario}/${
+          course?.id_curso
+        }/${newIsFilled ? 1 : 0}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Error al actualizar favorito");
+      }
+      await refetch();
+    } catch (err) {
+      message.error("Ha ocurrido un error al actualizar favorito");
+    }
   };
 
   const handleButtonClick = () => {
@@ -134,7 +155,11 @@ const CourseCard = ({ course, user, refetch }) => {
           }}
         >
           {" "}
-          {isFilled ? <HeartFilled /> : <HeartOutlined />}
+          {isFilled ? (
+            <HeartFilled style={{ color: "red" }} />
+          ) : (
+            <HeartOutlined />
+          )}
         </Button>
         <Button
           type="primary"
@@ -162,7 +187,7 @@ const CourseCard = ({ course, user, refetch }) => {
   );
 };
 
-const CoursesCard = ({ user, search }) => {
+const CoursesCard = ({ user, search, favorites }) => {
   // Fetch para conseguir los cursos inscritos por el usuario y los no inscritos por el usuario
   // Contenidos de cursos: path_de_curso, nombre_curso, imagen, link_al_curso, es_favorito, duracion, porcentaje_progreso
 
@@ -181,14 +206,23 @@ const CoursesCard = ({ user, search }) => {
   let groupedCourses = {};
 
   if (courses) {
-    const filteredCourses = courses.filter((course) =>
+    let filteredCourses = courses.filter((course) =>
       course.nombre_curso.toLowerCase().includes(search.toLowerCase())
     );
+    if (favorites) {
+      const favoriteCourses = user?.cursos_favoritos || [];
+      filteredCourses = filteredCourses.filter((course) =>
+        favoriteCourses.includes(course.id_curso)
+      );
+    }
     groupedCourses = filteredCourses.reduce((acc, course) => {
       if (!acc[course.path_de_curso]) {
         acc[course.path_de_curso] = [];
       }
-      acc[course.path_de_curso].push(course);
+      acc[course.path_de_curso].push({
+        ...course,
+        favorite: user?.cursos_favoritos?.includes(course.id_curso),
+      });
       return acc;
     }, {});
   }
