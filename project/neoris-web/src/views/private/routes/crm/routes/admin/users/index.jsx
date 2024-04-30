@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  Tag,
   Table,
   Button,
   Row,
@@ -10,10 +9,11 @@ import {
   message,
 } from "antd";
 import TableTitle from "./table-title";
-import { TableContainer } from "./elements";
+import UserDrawer from "./userDrawer";
+import { TableContainer, StyledTitle, StyledTag } from "./elements";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 const Users = () => {
   const [pageConfig, setPageConfig] = useState({
@@ -24,6 +24,18 @@ const Users = () => {
   const usersData = {
     users: {
       results: [
+        {
+          id: 1,
+          img: "https://via.placeholder.com/150",
+          firstName: "Juan",
+          lastName: "Pérez",
+        },
+        {
+          id: 1,
+          img: "https://via.placeholder.com/150",
+          firstName: "Juan",
+          lastName: "Pérez",
+        },
         {
           id: 1,
           img: "https://via.placeholder.com/150",
@@ -41,7 +53,9 @@ const Users = () => {
   // Table Columns
   const columns = [
     {
-      title: "USUARIO",
+      title: () => (
+        <StyledTitle>USUARIO</StyledTitle>
+      ),
       align: "left",
       key: "user",
 
@@ -56,27 +70,30 @@ const Users = () => {
       },
     },
     {
-      title: "NOMBRE",
+      title: () => (
+        <StyledTitle>NOMBRE</StyledTitle>
+      ),
       key: "name",
 
       render: (row) => (
-        <Tag color="blue">{row?.firstName + " " + row?.lastName}</Tag>
+        <StyledTag bordered={false} >{row?.firstName + " " + row?.lastName}</StyledTag>
       ),
     },
     {
       title: () => (
-        <Title
+        <StyledTitle
           level={4}
           strong
-          style={{ marginTop: "auto", marginBottom: "auto" }}
         >
-          Acciones
-        </Title>
+          ACCIONES
+        </StyledTitle>
       ),
       key: "action",
       width: 180,
       render: (row) => (
-        <Row>
+        <Row style={{
+          marginLeft: -13,
+        }}>
           <Tooltip placement="top" title="Editar">
             <Button
               shape="circle"
@@ -93,9 +110,9 @@ const Users = () => {
             <Button
               shape="circle"
               size="large"
-              type="danger"
-              style={{ margin: 5 }}
-              icon={<DeleteOutlined style={{ color: "white" }} />}
+              danger
+              style={{ margin: 5, backgroundColor: "white", outline: "red"}}
+              icon={<DeleteOutlined style={{ color: "red" }} />}
               onClick={() => {
                 Modal.confirm({
                   maskClosable: true,
@@ -123,6 +140,8 @@ const Users = () => {
   ];
 
   return (
+    <>
+    <UserDrawer />
     <TableContainer>
       <Table
         locale="es"
@@ -147,6 +166,7 @@ const Users = () => {
         }}
       />
     </TableContainer>
+    </>
   );
 };
 

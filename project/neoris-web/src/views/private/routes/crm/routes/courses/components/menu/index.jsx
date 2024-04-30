@@ -7,11 +7,15 @@ import { Image, Divider } from 'antd';
 import { useState } from 'react';
 
 
-const Menu = () => {
+
+const Menu = ({favorites}) => {
     const [isFilled, setIsFilled] = useState(false);
 
-    const handleClick = () => {
+    const handleClick = (favorites) => {
       setIsFilled(!isFilled);
+      favorites = isFilled;
+      console.log(favorites)
+      return favorites;
     };
 
   return (
@@ -37,7 +41,7 @@ const Menu = () => {
        
        }}>
         <StyledInput placeholder="Search course" prefix={<SearchOutlined />} size='large'/>
-        <StyledButton type="primary" size='large' onClick={handleClick}>
+        <StyledButton type="primary" size='large' onClick={() => handleClick(favorites)}>
         {isFilled ? <HeartFilled /> : <HeartOutlined />}
             Favorites</StyledButton>
        </div>

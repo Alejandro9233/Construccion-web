@@ -10,7 +10,7 @@ const Private = () => {
 
   const [user, setUser] = useState();
 
-  if (!user) {
+  if (user) {
     return (
       <AuthLayout>
         <Authentication setUser={setUser} />

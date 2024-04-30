@@ -4,15 +4,18 @@ import { Image, Button } from 'antd';
 import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 import genAiCurso from './genAiCurso.jpg';
 import { StyledDiv, StyledText } from './elements';
-
+import Menu from '../menu';
 
 const CourseCard = ({course}) => {
   const [isFilled, setIsFilled] = useState(false);
 
   const handleClick = () => {
     setIsFilled(!isFilled);
+    
   };
   
+
+
   return (
 
     <StyledDiv>
@@ -132,6 +135,7 @@ const CoursesCard = () => {
 
   return (
      <div>
+      <Menu/>
       {Object.entries(groupedCourses).map(([courseName, courseList]) => (
         <div key={courseName}>
           <StyledText className='title'>{courseName}</StyledText>

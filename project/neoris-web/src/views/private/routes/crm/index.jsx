@@ -27,8 +27,8 @@ const Users = Loadable({
   loading: TopBarProgress,
 });
 
-const Dash = (user) => {
-  if (user.type === "admin") {
+const Dash = () => {
+  if (user?.type === "admin") {
     return (
       <Switch>
         <Route path="/dashboard">

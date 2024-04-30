@@ -1,5 +1,4 @@
 import React from "react";
-import Menu from "./components/menu";
 import CoursesCard from "./components/coursesCard";
 
 
@@ -13,7 +12,6 @@ const Courses = () => {
       alignContent: 'center',
      
     }}>
-      <Menu/>
       <CoursesCard/>
     </div>
   );
