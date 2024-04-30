@@ -1,111 +1,217 @@
-import React, { useEffect } from 'react';
-import { useState } from 'react';
-import { Image, Button } from 'antd';
-import { HeartOutlined, HeartFilled } from '@ant-design/icons';
-import { StyledDiv, StyledText } from './elements';
+import React from "react";
+import { useState } from "react";
+import { Image, Button, Modal, Input, message } from "antd";
+import { HeartOutlined, HeartFilled } from "@ant-design/icons";
+import { StyledDiv, StyledText } from "./elements";
+import { useQuery } from "react-query";
 
-const CourseCard = ({course, user}) => {
+const ChangeProgressModal = ({
+  visible,
+  setVisible,
+  course,
+  userId,
+  refetch,
+}) => {
+  const [progress, setProgress] = useState(course.porcentaje_progreso);
+  const [courseTitle] = useState(course.nombre_curso);
+  const [loading, setLoading] = useState(false);
+
+  const handleOk = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `http://localhost:5000/actualizar-progreso-curso/${userId}/${course?.id_curso}/${progress}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error(
+          "Ha ocurrido un error al actualizar el progreso del curso"
+        );
+      }
+      await refetch();
+      message.success("Progreso actualizado correctamente");
+      setVisible(false);
+    } catch (err) {
+      message.error("Ha ocurrido un error al actualizar el progreso del curso");
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleCancel = () => {
+    setVisible(false);
+  };
+
+  return (
+    <Modal
+      title={
+        <span>
+          Change progress for{" "}
+          <span style={{ color: "#108ee9" }}>{courseTitle}</span>
+        </span>
+      }
+      visible={visible}
+      onOk={handleOk}
+      onCancel={handleCancel}
+      footer={[
+        <Button
+          key="submit"
+          type="primary"
+          onClick={handleOk}
+          loading={loading}
+        >
+          Aceptar
+        </Button>,
+      ]}
+    >
+      <Input
+        type="number"
+        max={100}
+        value={progress}
+        onChange={(e) => setProgress(e.target.value)}
+      />
+    </Modal>
+  );
+};
+
+const CourseCard = ({ course, user, refetch }) => {
   const [isFilled, setIsFilled] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   const handleClick = () => {
     setIsFilled(!isFilled);
   };
-  
+
   const handleButtonClick = () => {
-    window.open(course.link_al_curso, '_blank');
+    window.open(course.link_al_curso, "_blank");
   };
 
-  // Falta implementar la actualización del progreso del curso con algún input
-  const updateProgress = async () => {
-    if(course.porcentaje_progreso){
-      console.log('Course progress updated');
-      course.porcentaje_progreso = 1;
-    }
-    else if(!course.porcentaje_progreso){
-      console.log('Course progress created');
-      course.porcentaje_progreso = 1;
-    }
-
+  const handleModalOpen = () => {
+    setVisible(true);
   };
 
   return (
-
     <StyledDiv>
-      <Image src={course.imagen} preview={false} width={350} height={200} style={{ borderRadius: "20px" }} alt="" />
-      <StyledText className='title'>{course.nombre_curso}</StyledText>
-      <StyledText className='subtitle'>Duration: {course.duracion} hours</StyledText>
-      <StyledText className='subtitle'>Progress: {course?.porcentaje_progreso ? course.porcentaje_progreso + "%" : "Course hasn't been started yet"}</StyledText>
-      <div style={{
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginTop: "10px",
-      
-      }}>
-      <Button shape="circle"  onClick={handleClick} style={{
-        border: "none",
-        outline: "none",
-        display: "flex",
-        justifyItems: "center",
-        alignItems: "center",
-      }}> {isFilled ? <HeartFilled /> : <HeartOutlined />}</Button>
-      <Button type="primary" style={{background:'black', borderRadius:'10px'}} onClick={updateProgress}>
-        <StyledText style={{ color:'white' }}>
-          Change progress
-        </StyledText>
-      </Button>      
-      <Button type="primary" style={{background:'black', borderRadius:'10px'}} onClick={handleButtonClick}>
-        <StyledText style={{ color:'white' }}>
-          See course details
-        </StyledText>
-      </Button>
+      <Image
+        src={course.imagen}
+        preview={false}
+        width={350}
+        height={200}
+        style={{ borderRadius: "20px" }}
+        alt=""
+      />
+      <StyledText className="title">{course.nombre_curso}</StyledText>
+      <StyledText className="subtitle">
+        Duration: {course.duracion} hours
+      </StyledText>
+      <StyledText className="subtitle">
+        Progress:{" "}
+        {course?.porcentaje_progreso
+          ? course.porcentaje_progreso + "%"
+          : "Course hasn't been started yet"}
+      </StyledText>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          marginTop: "10px",
+        }}
+      >
+        <Button
+          shape="circle"
+          onClick={handleClick}
+          style={{
+            border: "none",
+            outline: "none",
+            display: "flex",
+            justifyItems: "center",
+            alignItems: "center",
+          }}
+        >
+          {" "}
+          {isFilled ? <HeartFilled /> : <HeartOutlined />}
+        </Button>
+        <Button
+          type="primary"
+          style={{ background: "black", borderRadius: "10px" }}
+          onClick={handleModalOpen}
+        >
+          <StyledText style={{ color: "white" }}>Change progress</StyledText>
+        </Button>
+        <Button
+          type="primary"
+          style={{ background: "black", borderRadius: "10px" }}
+          onClick={handleButtonClick}
+        >
+          <StyledText style={{ color: "white" }}>See course details</StyledText>
+        </Button>
       </div>
+      <ChangeProgressModal
+        visible={visible}
+        setVisible={setVisible}
+        course={course}
+        userId={user.id_usuario}
+        refetch={refetch}
+      />
     </StyledDiv>
-  
-)}
+  );
+};
 
-const CoursesCard = ({user}) => {
+const CoursesCard = ({ user, search }) => {
   // Fetch para conseguir los cursos inscritos por el usuario y los no inscritos por el usuario
   // Contenidos de cursos: path_de_curso, nombre_curso, imagen, link_al_curso, es_favorito, duracion, porcentaje_progreso
-  const [courses, setCourses] = useState([]);
-  
-  useEffect(() => {
-    const fetchData = async () => {
-      await fetch(`http://localhost:5000/cursos-inscritos-usuario/${user?.id_usuario}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setCourses(data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
 
-    fetchData();
-  }, [user]);
-
-  const groupedCourses = courses.reduce((acc, course) => {
-    if (!acc[course.path_de_curso]) {
-      acc[course.path_de_curso] = [];
+  const fetchCourses = async () => {
+    const response = await fetch(
+      `http://localhost:5000/cursos-inscritos-usuario/${user?.id_usuario}`
+    );
+    if (!response.ok) {
+      throw new Error("Error al buscar los cursos");
     }
-    acc[course.path_de_curso].push(course);
-    return acc;
-  }, {});
+    return response.json();
+  };
+
+  const { data: courses, refetch } = useQuery("courses", fetchCourses);
+
+  let groupedCourses = {};
+
+  if (courses) {
+    const filteredCourses = courses.filter((course) =>
+      course.nombre_curso.toLowerCase().includes(search.toLowerCase())
+    );
+    groupedCourses = filteredCourses.reduce((acc, course) => {
+      if (!acc[course.path_de_curso]) {
+        acc[course.path_de_curso] = [];
+      }
+      acc[course.path_de_curso].push(course);
+      return acc;
+    }, {});
+  }
 
   return (
     <div>
       {Object.entries(groupedCourses).map(([courseName, courseList]) => (
         <div key={courseName}>
-          <StyledText className='title'>Path: {courseName}</StyledText>
-          <div style={{ display: 'flex', overflowX: 'auto' }}>
+          <StyledText className="title">Path: {courseName}</StyledText>
+          <div style={{ display: "flex", overflowX: "auto" }}>
             {courseList.map((course, index) => (
-              <CourseCard key={index} course={course} user={user}/>
+              <CourseCard
+                key={index}
+                course={course}
+                user={user}
+                refetch={refetch}
+              />
             ))}
           </div>
         </div>
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default CoursesCard
+export default CoursesCard;
