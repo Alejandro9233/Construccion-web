@@ -26,7 +26,10 @@ const Container = styled.div`
 
 const ProfilePicture = styled.img`
   border-radius: 50%;
-  height: 100%;
+  width: 3vw;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  
 `;
 
 const Index = styled.div`

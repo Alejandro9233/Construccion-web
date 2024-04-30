@@ -5,7 +5,7 @@ import Sidebar from "./sidebar";
 import Navbar from "./navbar";
 import Footer from "./footer";
 
-const MainLayout = ({ children }) => {
+const MainLayout = ({ children, user, setUser }) => {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
@@ -17,7 +17,12 @@ const MainLayout = ({ children }) => {
           background: "#FFF",
         }}
       >
-        <Sidebar collapsed={collapsed} onCollapse={setCollapsed} />
+        <Sidebar
+          collapsed={collapsed}
+          onCollapse={setCollapsed}
+          user={user}
+          setUser={setUser}
+        />
         <Layer
           style={{
             width: "100%",
@@ -27,7 +32,7 @@ const MainLayout = ({ children }) => {
             background: "#FFF",
           }}
         >
-          <Navbar />
+          <Navbar user={user}/>
           <Card
             style={{
               height: "96vh",

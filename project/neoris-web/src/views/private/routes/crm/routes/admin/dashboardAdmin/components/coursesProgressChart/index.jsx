@@ -1,11 +1,32 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { StyledDiv, StyledTitle, StyledText } from "./elements";
 import { Row, Col, Progress, Tooltip } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 
-const CoursesProgressChart = () => {
+const CoursesProgressChart = ({user}) => {
   const context =
     "Lo que esta grafica representa es el progreso promedio de todos los cursos de los usuarios.";
+  
+  // Use state para guardar el progreso promedio global y use effect para fetchearlo
+  // Datos de respuesta: promedio_porcentaje_avance_total
+  const [averageProgress, setAverageProgress] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetch(`http://localhost:5000/promedio-total-progreso`)
+        .then((res) => res.json())
+        .then((data) => {
+          setAverageProgress(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+  fetchData();    
+  }, [user]);
+
+  let averageGlobalProgress = averageProgress.length > 0 ? averageProgress[0].promedio_porcentaje_avance_total : 0;
 
   return (
     <StyledDiv>
@@ -13,14 +34,14 @@ const CoursesProgressChart = () => {
       <StyledTitle>Average Courses Progress</StyledTitle>
       <Row style={{ width: "70%", textAlign: "center" }}>
         <StyledText>
-          Discover your team progress, and learn more about them{" "}
+          Here you can find the average course progress from all users{" "}
         </StyledText>
       </Row>
 
       <div style={{ marginTop: "50px" }} />
       <Progress
         type="circle"
-        percent={90}
+        percent={averageGlobalProgress}
         width={150}
         strokeWidth={10}
         strokeColor={{

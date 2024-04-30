@@ -3,7 +3,8 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import TopBarProgress from "react-topbar-progress-indicator";
 import Loadable from "react-loadable";
 
-const { user } = { user: { name: "John Doe", type: "admin" } };
+
+const user = "admin";
 
 //Client Routes
 const Profile = Loadable({
@@ -28,11 +29,11 @@ const Users = Loadable({
 });
 
 const Dash = () => {
-  if (user?.type === "admin") {
+  if (user === "admin") {
     return (
       <Switch>
         <Route path="/dashboard">
-          <AdminDashboard />
+          <AdminDashboard user={user} />
         </Route>
         <Route path="/users">
           <Users />
@@ -44,10 +45,10 @@ const Dash = () => {
   return (
     <Switch>
       <Route path="/profile">
-        <Profile />
+        <Profile user={user} />
       </Route>
       <Route path="/courses">
-        <Courses />
+        <Courses user={user} />
       </Route>
       <Redirect to="/profile" />
     </Switch>

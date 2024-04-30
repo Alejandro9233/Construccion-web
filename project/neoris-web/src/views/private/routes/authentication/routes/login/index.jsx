@@ -1,29 +1,11 @@
 import React from "react";
-import { Divider, Checkbox, Input, Form } from "antd";
-import { useState } from "react";
+import { Divider, Checkbox, Input, Form, message } from "antd";
 import { Button, Text, StyledLink, StyledFormItem } from "../elements";
-import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 
-const Login = (setUser) => {
-  const [login, setLoginDetails] = useState({
-    email: "",
-    password: "",
-  });
+const Login = ({ setUser }) => {
+  const [form] = Form.useForm();
 
-  const [error, setError] = useState(null);
-
-  // Información para la validación de datos en el login, contiene {"validación": bool, "es_admin": bool}
-  const [validation, setValidation] = useState([]);
-
-  const changeHandler = (e) => {
-    const { name, value } = e.target;
-    setLoginDetails((prevLogin) => ({
-      ...prevLogin,
-      [name]: value,
-    }));
-  };
-
-  const validateInputValues = async (values) => {
+  const validateUser = async (values) => {
     await fetch("http://localhost:5000/verificar-usuario", {
       method: "POST",
       headers: {
@@ -33,43 +15,26 @@ const Login = (setUser) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
-        setValidation(data);
+        if (data[0].validacion === false) {
+          throw new Error("Usuario incorrecto");
+        }
+        setUser(data[0]);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        message.error(
+          "Ha ocurrido un error, por favor verifica tus datos e intenta"
+        );
       });
+  };
 
-    if (validation.length === 0) {
-      return Promise.reject("Invalid username or password");
-    } else if (
-      validation[0].validacion === true &&
-      validation[0].es_admin === true
-    ) {
-      return Promise.resolve();
-    } else if (
-      validation[0].validacion === true &&
-      validation[0].es_admin === false
-    ) {
-      return Promise.resolve();
-    } else if (validation[0].validacion === false) {
-      return Promise.reject("Invalid username or password");
+  const onFinish = async () => {
+    try {
+      const values = await form.validateFields();
+      await validateUser(values);
+    } catch (error) {
+      message.error("Por favor, completa los campos requeridos");
     }
   };
-
-  const onFinish = (values) => {
-    validateInputValues(values)
-      .then(() => {
-        console.log("Form submitted successfully:", values);
-        setError(null);
-      })
-      .catch((error) => {
-        console.error("Form submission failed:", error);
-        setError(error);
-      });
-  };
-
-  const isDisabled = Object.values(login).some((value) => value === "");
 
   return (
     <div
@@ -82,6 +47,7 @@ const Login = (setUser) => {
       }}
     >
       <Form
+        form={form}
         validateTrigger="onSubmit"
         style={{
           display: "flex",
@@ -112,35 +78,35 @@ const Login = (setUser) => {
           name="email"
           rules={[
             {
-              type: "email",
-              message: "The input is not valid E-mail",
+              required: true,
+              message: "Por favor introduce tu correo electrónico",
             },
           ]}
-          validateStatus={error && "error"}
         >
           <Input
             size="large"
             id="email"
             name="email"
-            placeholder="Enter your email"
-            value={login.email}
-            onChange={changeHandler}
+            placeholder="Introduce tu correo electrónico"
           />
         </StyledFormItem>
 
         <Text className="text">Password*</Text>
         <StyledFormItem
           name="password"
-          validateStatus={error && "error"}
-          help={error}
+          rules={[
+            {
+              required: true,
+              message: "Por favor introduce tu contraseña",
+            },
+          ]}
+          hasFeedback
         >
           <Input.Password
             size="large"
             id="password"
             name="password"
-            placeholder="Enter your password"
-            value={login.password}
-            onChange={changeHandler}
+            placeholder="Introduce tu contraseña"
           />
         </StyledFormItem>
 
@@ -158,12 +124,7 @@ const Login = (setUser) => {
         </div>
 
         <StyledFormItem>
-          <Button
-            type="primary"
-            size="large"
-            htmlType="submit"
-            disabled={isDisabled}
-          >
+          <Button type="primary" size="large" htmlType="submit">
             Sign in
           </Button>
         </StyledFormItem>

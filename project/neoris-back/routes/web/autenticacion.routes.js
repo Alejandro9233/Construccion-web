@@ -4,13 +4,14 @@ const autenticacionControllers = require('../../controllers/web/autenticacion.co
 // Rutas para autenticar usuarios regresa:
 /* Regresa un solo objeto en el siguiente formato:
 {
-    "id_usuario": 1,
-    "nombre_usuario": "user_1",
-    "e_mail": "user1@tec.mx",
-    "ubicación": "City A",
-    "departamento": "IT",
-    "puesto": "Developer",
-    "es_admin": true,
+    "id_usuario": 2,
+    "nombre_usuario": "user_2",
+    "e_mail": "user2@gmail.com",
+    "ubicacion": "City B",
+    "departamento": "Marketing",
+    "puesto": "Analyst",
+    "es_admin": false,
+    "foto_de_perfil": null,
     "validacion": true
 }
 */

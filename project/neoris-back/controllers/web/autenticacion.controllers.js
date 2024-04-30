@@ -6,7 +6,6 @@ async function verificarUsuario(req, res) {
     try {
         let {email, password} = req.body;
         password = sha256(password);
-        console.log(password);
         const pool = await db.getConnection();
         const result = await pool
         .request()
@@ -18,7 +17,7 @@ async function verificarUsuario(req, res) {
         console.error('Error verifying user:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     } finally {
-        db.closeConnection();
+        await db.closeConnection();
     }
 }
 

@@ -4,25 +4,53 @@ import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
 import { Row, Statistic } from "antd";
 import ReactApexChart from "react-apexcharts";
 
-const generateFakeData = () => {
-  let data = [];
-  for (let i = 0; i < 7; i++) {
-    data.push(Math.floor(Math.random() * 100));
-  }
-  return data;
-};
-
-const GameTrafficChart = () => {
+const GameTrafficChart = ({user}) => {
+  // Use state para guardar las el tráfico dentro del juego por fecha
+  // Datos de respuesta: log_date, cantidad_visitas
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    setData(generateFakeData());
-  }, []);
+    const fetchData = async () => {
+      await fetch(`http://localhost:5000/conexiones-por-fecha`)
+        .then((res) => res.json())
+        .then((data) => {
+          setData(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
 
+  fetchData();
+  }, [user]);
+
+  // conseguir los arreglos de los ejes verticales y horizontales para las tablas
+  let dates = data ? data.map((item) => item.log_date) : [];
+  let visits = data ? data.map((item) => item.cantidad_visitas) : [];
+
+  // función para quitarle la hora a las fechas
+  function formatDate(dates) {
+    let formattedDates = [];
+    dates.forEach(date => {
+      formattedDates.push(date.split("T").shift());
+    });
+    return formattedDates;
+  };
+
+  // Conseguir una suma total de los visitantes de los útlimos 7 días
+  function getTotalVisitors(visits){
+    let sum = 0;
+    visits.forEach(dailyVisits =>{
+      sum = dailyVisits + sum;
+    });
+    return sum;
+  };
+
+  // Calcula el cambio de tráfico entre hoy y ayer
   const calculateChange = () => {
     if (data.length < 2) return 0;
-    const today = data[data.length - 1];
-    const yesterday = data[data.length - 2];
+    const today = data[data.length - 1].cantidad_visitas;
+    const yesterday = data[data.length - 2].cantidad_visitas;
     return ((today - yesterday) / yesterday) * 100;
   };
 
@@ -52,7 +80,7 @@ const GameTrafficChart = () => {
         align={"middle"}
       >
         <div>
-          <StyledTitle>1,200</StyledTitle>
+          <StyledTitle>{getTotalVisitors(visits)}</StyledTitle>
           <StyledText style={{ marginLeft: "5px" }}>Visitors</StyledText>
         </div>
       </Row>
@@ -98,7 +126,7 @@ const GameTrafficChart = () => {
               },
             },
             xaxis: {
-              categories: ["Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"],
+              categories: formatDate(dates),
               labels: {
                 show: true,
                 align: "right",
@@ -113,7 +141,7 @@ const GameTrafficChart = () => {
                     "#B0BBD5",
                     "#B0BBD5",
                     "#B0BBD5",
-                  ],
+                  ]
                 },
               },
             },
@@ -133,8 +161,8 @@ const GameTrafficChart = () => {
           }}
           series={[
             {
-              name: "Total Visitas Registradas",
-              data: generateFakeData(),
+              name: "Totals Game Visits",
+              data: visits,
               color: "#fff",
             },
           ]}
