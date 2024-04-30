@@ -6,8 +6,8 @@ import { StyledImage, StyledInput, StyledButton } from "./elements";
 import { Image, Divider } from "antd";
 import { useState } from "react";
 
-const Menu = ({ search, setSearch }) => {
-  const [isFilled, setIsFilled] = useState(false);
+const Menu = ({ search, setSearch, isFilled, setIsFilled }) => {
+  
 
   const handleClick = () => {
     setIsFilled(!isFilled);

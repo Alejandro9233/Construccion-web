@@ -1,12 +1,35 @@
 import React, { useEffect, useState } from "react";
-import { Image, Row, Col, Button } from "antd";
-import { HeartOutlined } from "@ant-design/icons";
+import { Image, Row, Col, Button, message } from "antd";
+import { HeartOutlined, HeartFilled } from "@ant-design/icons";
 import { StyledDiv, StyledTitle, StyledText } from "./elements";
 
-const CourseCard = ({ course }) => {
-  console.log(course);
+const CourseCard = ({ course, userId }) => {
+  const [isFilled, setIsFilled] = useState(course?.favorite);
   const handleButtonClick = () => {
     window.open(course.link_al_curso, "_blank");
+  };
+
+  const handleClick = async () => {
+    try {
+      const newIsFilled = !isFilled;
+      setIsFilled(newIsFilled);
+      const response = await fetch(
+        `http://localhost:5000/actualizar-favorito/${userId}/${
+          course?.id_curso
+        }/${newIsFilled ? 1 : 0}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Error al actualizar favorito");
+      }
+    } catch (err) {
+      message.error("Ha ocurrido un error al actualizar favorito");
+    }
   };
 
   return (
@@ -79,9 +102,22 @@ const CourseCard = ({ course }) => {
         >
           <Button
             shape="circle"
-            icon={<HeartOutlined />}
-            style={{ border: "none" }}
-          />
+            onClick={handleClick}
+            style={{
+              border: "none",
+              outline: "none",
+              display: "flex",
+              justifyItems: "center",
+              alignItems: "center",
+            }}
+          >
+            {" "}
+            {isFilled ? (
+              <HeartFilled style={{ color: "red" }} />
+            ) : (
+              <HeartOutlined />
+            )}
+          </Button>
         </Col>
       </Row>
     </StyledDiv>
@@ -95,13 +131,20 @@ const CoursesCard = ({ user }) => {
   // Use state para guardar el listado de cursos y use effect para hacer fetch a la api y obtener los cursos
   // Contenidos de courses: {nombre_curso, path_de_curso, imagen, link_al_curso}
   const [courses, setCourses] = useState([]);
+  const favoriteCourses = user?.cursos_favoritos || [];
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetch(`http://localhost:5000/listado-cursos-web-card/${user?.id_usuario}`)
+      await fetch(
+        `http://localhost:5000/listado-cursos-web-card/${user?.id_usuario}`
+      )
         .then((res) => res.json())
         .then((data) => {
-          setCourses(data);
+          const updatedCourses = data.map((course) => ({
+            ...course,
+            favorite: favoriteCourses.includes(course.id_curso),
+          }));
+          setCourses(updatedCourses);
         })
         .catch((err) => {
           console.log(err);
@@ -118,15 +161,15 @@ const CoursesCard = ({ user }) => {
       <StyledText>{text}</StyledText>
       <div
         style={{
-          marginTop: "10px",
           maxHeight: "calc(3 * 100px)",
           overflowY: "auto",
           backgroundColor: "white",
           width: "100%",
+          padding: "10px",
         }}
       >
         {courses.map((course, index) => (
-          <CourseCard key={index} course={course} />
+          <CourseCard key={index} course={course} userId={user?.id_usuario} />
         ))}
       </div>
     </StyledDiv>
