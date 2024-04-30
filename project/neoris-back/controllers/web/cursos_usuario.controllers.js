@@ -65,4 +65,32 @@ async function actualizarProgresoCurso(req, res) {
     }
 }
 
-module.exports = { getCursosUsuario, crearProgresoCurso, actualizarProgresoCurso};
+// Actualizar si un curso es favorito o no
+async function actualizarCursoEsFavorito(req, res) {
+    let query = "";
+    if (req.params.is_favorite == "1") {
+        query = 'anadir_curso_favorito ';
+    }
+    else if (req.params.is_favorite == "0") {
+        query = 'quitar_curso_favorito '
+    }
+
+    try {
+        const pool = await db.getConnection();
+        const result = await pool.request()
+            .input('id_user', mssql.Int, req.params.id_user)
+            .input('id_course', mssql.Int, req.params.id_course)
+            .query(query + '@id_usuario = @id_user, @id_curso = @id_course');
+        res.json({
+            "nuevos_cursos_favoritos": result.recordset[0].cursos_favoritos,
+            "message": "Cursos favoritos actualizado correctamente",
+        });
+    } catch (error) {
+        console.error('Error updating is favorite:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    } finally {
+        await db.closeConnection();
+    }
+}
+
+module.exports = { getCursosUsuario, crearProgresoCurso, actualizarProgresoCurso, actualizarCursoEsFavorito};
