@@ -2,17 +2,24 @@ import React, { useEffect, useState } from "react";
 import { Image, Row, Col, Button, message } from "antd";
 import { HeartOutlined, HeartFilled } from "@ant-design/icons";
 import { StyledDiv, StyledTitle, StyledText } from "./elements";
+import { useQuery } from "react-query";
 
-const CourseCard = ({ course, userId }) => {
-  const [isFilled, setIsFilled] = useState(course?.favorite);
+const CourseCard = ({ course, userId, refreshFavList }) => {
+  const [isFilled, setIsFilled] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const handleButtonClick = () => {
     window.open(course.link_al_curso, "_blank");
   };
 
+  useEffect(() => {
+    setIsFilled(course?.favorite);
+  }, [course]);
+
   const handleClick = async () => {
+    setLoading(true);
     try {
       const newIsFilled = !isFilled;
-      setIsFilled(newIsFilled);
       const response = await fetch(
         `http://localhost:5000/actualizar-favorito/${userId}/${
           course?.id_curso
@@ -27,8 +34,12 @@ const CourseCard = ({ course, userId }) => {
       if (!response.ok) {
         throw new Error("Error al actualizar favorito");
       }
+      setIsFilled(newIsFilled);
+      await refreshFavList();
     } catch (err) {
       message.error("Ha ocurrido un error al actualizar favorito");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -50,7 +61,7 @@ const CourseCard = ({ course, userId }) => {
           }}
         >
           <Image
-            src={course.imagen}
+            src={course?.imagen}
             preview={false}
             width={70}
             height={40}
@@ -101,6 +112,7 @@ const CourseCard = ({ course, userId }) => {
           }}
         >
           <Button
+            disabled={loading}
             shape="circle"
             onClick={handleClick}
             style={{
@@ -131,28 +143,50 @@ const CoursesCard = ({ user }) => {
   // Use state para guardar el listado de cursos y use effect para hacer fetch a la api y obtener los cursos
   // Contenidos de courses: {nombre_curso, path_de_curso, imagen, link_al_curso}
   const [courses, setCourses] = useState([]);
-  const favoriteCourses = user?.cursos_favoritos || [];
+  const [favoritesList, setFavoritesList] = useState("");
+
+  const fetchUser = async () => {
+    const response = await fetch(
+      `http://localhost:5000/favorite-courses/${user?.id_usuario}`
+    );
+    if (!response.ok) {
+      throw new Error("Error al buscar el usuario");
+    }
+    return response.json();
+  };
+
+  const { data: userFavList, refetch: refreshFavList } = useQuery(
+    "user",
+    fetchUser
+  );
 
   useEffect(() => {
-    const fetchData = async () => {
-      await fetch(
-        `http://localhost:5000/listado-cursos-web-card/${user?.id_usuario}`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          const updatedCourses = data.map((course) => ({
-            ...course,
-            favorite: favoriteCourses.includes(course.id_curso),
-          }));
-          setCourses(updatedCourses);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
+    if (userFavList) {
+      setFavoritesList(userFavList[0]?.cursos_favoritos);
+    }
+  }, [userFavList]);
 
-    fetchData();
-  }, [user]);
+  const fetchCourses = async () => {
+    const response = await fetch(
+      `http://localhost:5000/listado-cursos-web-card/${user?.id_usuario}`
+    );
+    if (!response.ok) {
+      throw new Error("Error al obtener cursos");
+    }
+    return response.json();
+  };
+
+  const { data: coursesData } = useQuery("courses", fetchCourses);
+
+  useEffect(() => {
+    if (coursesData) {
+      const updatedCourses = coursesData.map((course) => ({
+        ...course,
+        favorite: favoritesList.includes(course?.id_curso),
+      }));
+      setCourses(updatedCourses);
+    }
+  }, [coursesData, favoritesList]);
 
   return (
     <StyledDiv>
@@ -169,7 +203,12 @@ const CoursesCard = ({ user }) => {
         }}
       >
         {courses.map((course, index) => (
-          <CourseCard key={index} course={course} userId={user?.id_usuario} />
+          <CourseCard
+            key={index}
+            course={course}
+            userId={user?.id_usuario}
+            refreshFavList={refreshFavList}
+          />
         ))}
       </div>
     </StyledDiv>

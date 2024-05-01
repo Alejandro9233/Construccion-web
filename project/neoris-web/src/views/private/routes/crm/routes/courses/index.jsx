@@ -21,7 +21,11 @@ const Courses = ({ user }) => {
         isFilled={isFilled}
         setIsFilled={setIsFilled}
       />
-      <CoursesCard user={user} search={search} favorites={isFilled} />
+      <CoursesCard
+        user={user}
+        search={search}
+        favorites={isFilled}
+      />
     </div>
   );
 };

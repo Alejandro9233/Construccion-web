@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Image, Button, Modal, Input, message } from "antd";
 import { HeartOutlined, HeartFilled } from "@ant-design/icons";
@@ -79,14 +79,19 @@ const ChangeProgressModal = ({
   );
 };
 
-const CourseCard = ({ course, user, refetch }) => {
-  const [isFilled, setIsFilled] = useState(course?.favorite);
+const CourseCard = ({ course, user, refetch, refreshFavList }) => {
+  const [isFilled, setIsFilled] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setIsFilled(course?.favorite);
+  }, [course]);
 
   const handleClick = async () => {
+    setLoading(true);
     try {
       const newIsFilled = !isFilled;
-      setIsFilled(newIsFilled);
       const response = await fetch(
         `http://localhost:5000/actualizar-favorito/${user?.id_usuario}/${
           course?.id_curso
@@ -101,9 +106,12 @@ const CourseCard = ({ course, user, refetch }) => {
       if (!response.ok) {
         throw new Error("Error al actualizar favorito");
       }
-      await refetch();
+      setIsFilled(newIsFilled);
+      await refreshFavList();
     } catch (err) {
       message.error("Ha ocurrido un error al actualizar favorito");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -118,21 +126,21 @@ const CourseCard = ({ course, user, refetch }) => {
   return (
     <StyledDiv>
       <Image
-        src={course.imagen}
+        src={course?.imagen}
         preview={false}
         width={350}
         height={200}
         style={{ borderRadius: "20px" }}
         alt=""
       />
-      <StyledText className="title">{course.nombre_curso}</StyledText>
+      <StyledText className="title">{course?.nombre_curso}</StyledText>
       <StyledText className="subtitle">
-        Duration: {course.duracion} hours
+        Duration: {course?.duracion} hours
       </StyledText>
       <StyledText className="subtitle">
         Progress:{" "}
         {course?.porcentaje_progreso
-          ? course.porcentaje_progreso + "%"
+          ? course?.porcentaje_progreso + "%"
           : "Course hasn't been started yet"}
       </StyledText>
       <div
@@ -144,6 +152,7 @@ const CourseCard = ({ course, user, refetch }) => {
         }}
       >
         <Button
+          disabled={loading}
           shape="circle"
           onClick={handleClick}
           style={{
@@ -191,6 +200,29 @@ const CoursesCard = ({ user, search, favorites }) => {
   // Fetch para conseguir los cursos inscritos por el usuario y los no inscritos por el usuario
   // Contenidos de cursos: path_de_curso, nombre_curso, imagen, link_al_curso, es_favorito, duracion, porcentaje_progreso
 
+  const [favoritesList, setFavoritesList] = useState("");
+
+  const fetchUser = async () => {
+    const response = await fetch(
+      `http://localhost:5000/favorite-courses/${user?.id_usuario}`
+    );
+    if (!response.ok) {
+      throw new Error("Error al buscar el usuario");
+    }
+    return response.json();
+  };
+
+  const { data: userFavList, refetch: refreshFavList } = useQuery(
+    "user",
+    fetchUser
+  );
+
+  useEffect(() => {
+    if (userFavList) {
+      setFavoritesList(userFavList[0]?.cursos_favoritos);
+    }
+  }, [userFavList]);
+
   const fetchCourses = async () => {
     const response = await fetch(
       `http://localhost:5000/cursos-inscritos-usuario/${user?.id_usuario}`
@@ -205,14 +237,13 @@ const CoursesCard = ({ user, search, favorites }) => {
 
   let groupedCourses = {};
 
-  if (courses) {
+  if (courses && userFavList) {
     let filteredCourses = courses.filter((course) =>
       course.nombre_curso.toLowerCase().includes(search.toLowerCase())
     );
     if (favorites) {
-      const favoriteCourses = user?.cursos_favoritos || [];
       filteredCourses = filteredCourses.filter((course) =>
-        favoriteCourses.includes(course.id_curso)
+        favoritesList.includes(course?.id_curso)
       );
     }
     groupedCourses = filteredCourses.reduce((acc, course) => {
@@ -221,7 +252,7 @@ const CoursesCard = ({ user, search, favorites }) => {
       }
       acc[course.path_de_curso].push({
         ...course,
-        favorite: user?.cursos_favoritos?.includes(course.id_curso),
+        favorite: favoritesList.includes(course?.id_curso),
       });
       return acc;
     }, {});
@@ -239,6 +270,7 @@ const CoursesCard = ({ user, search, favorites }) => {
                 course={course}
                 user={user}
                 refetch={refetch}
+                refreshFavList={refreshFavList}
               />
             ))}
           </div>
