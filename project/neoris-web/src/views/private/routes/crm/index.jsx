@@ -16,6 +16,11 @@ const Courses = Loadable({
   loading: TopBarProgress,
 });
 
+const Game = Loadable({
+  loader: () => import("./routes/game"),
+  loading: TopBarProgress,
+});
+
 //Admin Routes
 const AdminDashboard = Loadable({
   loader: () => import("./routes/admin/dashboardAdmin"),
@@ -48,6 +53,9 @@ const Dash = ({ user }) => {
       </Route>
       <Route path="/courses">
         <Courses user={user} />
+      </Route>
+      <Route path="/game">
+        <Game />
       </Route>
       <Redirect to="/profile" />
     </Switch>

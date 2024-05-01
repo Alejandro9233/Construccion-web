@@ -42,7 +42,8 @@ router.get('/promedio-total-progreso', dashboardAdminController.getPromedioTotal
 /* Arreglo de objetos en el siguiente formato:
 {
     "nombre_usuario": "johndoe",
-    "foto_de_perfil": null
+    "foto_de_perfil": null,
+    "ultima_conexion": "2024-04-30T03:59:06.330Z"
 }
 */
 router.get('/usuarios-no-admins', dashboardAdminController.getUsuariosNoAdmins);

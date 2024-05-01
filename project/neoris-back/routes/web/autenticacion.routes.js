@@ -12,6 +12,7 @@ const autenticacionControllers = require('../../controllers/web/autenticacion.co
     "puesto": "Analyst",
     "es_admin": false,
     "foto_de_perfil": null,
+    "cursos_favoritos": "1 2 3"
     "validacion": true
 }
 */

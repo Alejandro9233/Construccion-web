@@ -3,7 +3,12 @@ import { Link, withRouter, useHistory } from "react-router-dom";
 import { Image, Button, Divider } from "antd";
 import { Menu, Text, Container } from "./elements";
 import Logo from "./logo.png";
-import { IdcardTwoTone, BookTwoTone, PieChartTwoTone } from "@ant-design/icons";
+import {
+  IdcardTwoTone,
+  BookTwoTone,
+  PieChartTwoTone,
+  RocketTwoTone,
+} from "@ant-design/icons";
 
 const { Item } = Menu;
 
@@ -43,7 +48,14 @@ const Sidebar = ({ user, setUser }) => {
         }}
       >
         <Link to="/profile">
-          <Text selected={selectedKey === "/profile"}>Perfil</Text>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Text selected={selectedKey === "/profile"}>Perfil</Text>
+          </div>
         </Link>
       </Item>
       <Item
@@ -62,7 +74,40 @@ const Sidebar = ({ user, setUser }) => {
         }}
       >
         <Link to="/courses">
-          <Text selected={selectedKey === "/courses"}>Cursos</Text>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Text selected={selectedKey === "/courses"}>Cursos</Text>
+          </div>
+        </Link>
+      </Item>
+      <Item
+        icon={<RocketTwoTone style={{ fontSize: "20px" }} />}
+        key="/game"
+        onClick={() => setSelectedKey("/game")}
+        style={{
+          background:
+            selectedKey === "/game"
+              ? "linear-gradient(to top right, #90D7E7 60%, #108ee9)"
+              : "none",
+          paddingLeft: "30px",
+          display: "flex",
+          alignItems: "center",
+          marginBottom: 10,
+        }}
+      >
+        <Link to="/game">
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Text selected={selectedKey === "/game"}>Video Juego</Text>
+          </div>
         </Link>
       </Item>
     </>
@@ -86,7 +131,14 @@ const Sidebar = ({ user, setUser }) => {
         }}
       >
         <Link to="/dashboard">
-          <Text selected={selectedKey === "/dashboard"}>Dashboard</Text>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Text selected={selectedKey === "/dashboard"}>Dashboard</Text>
+          </div>
         </Link>
       </Item>
       <Item
@@ -105,7 +157,14 @@ const Sidebar = ({ user, setUser }) => {
         }}
       >
         <Link to="/users">
-          <Text selected={selectedKey === "/users"}>Usuarios</Text>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Text selected={selectedKey === "/users"}>Usuarios</Text>
+          </div>
         </Link>
       </Item>
     </>

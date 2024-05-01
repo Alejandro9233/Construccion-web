@@ -18,10 +18,10 @@ const Profile = ({ user }) => {
             alignItems: "stretch",
           }}
         >
-          <Col style={{ width: "30%" }}>
-            <ProfileCard user={user}/>
+          <Col style={{ width: "35%" }}>
+            <ProfileCard user={user} />
           </Col>
-          <Col style={{ width: "60%", marginRight: "7vw" }}>
+          <Col style={{ width: "60%", marginRight: "1vw" }}>
             <ProgressCard user={user} />
           </Col>
         </Row>
@@ -34,11 +34,11 @@ const Profile = ({ user }) => {
             marginTop: "3vh",
           }}
         >
-          <Col style={{ width: "30%" }}>
-            <CoursesCard user={user}/>
+          <Col style={{ width: "35%" }}>
+            <CoursesCard user={user} />
           </Col>
-          <Col style={{ width: "60%", marginRight: "7vw" }}>
-            <InfoCard user={user}/>
+          <Col style={{ width: "60%", marginRight: "1vw" }}>
+            <InfoCard user={user} />
           </Col>
         </Row>
       </Col>

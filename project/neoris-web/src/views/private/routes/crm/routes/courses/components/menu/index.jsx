@@ -4,11 +4,8 @@ import topImageBar from "./topImageBar.png";
 import { SearchOutlined, HeartOutlined, HeartFilled } from "@ant-design/icons";
 import { StyledImage, StyledInput, StyledButton } from "./elements";
 import { Image, Divider } from "antd";
-import { useState } from "react";
 
-const Menu = ({ search, setSearch }) => {
-  const [isFilled, setIsFilled] = useState(false);
-
+const Menu = ({ search, setSearch, isFilled, setIsFilled }) => {
   const handleClick = () => {
     setIsFilled(!isFilled);
   };
@@ -52,7 +49,11 @@ const Menu = ({ search, setSearch }) => {
           onChange={(e) => setSearch(e.target.value)}
         />
         <StyledButton type="primary" size="large" onClick={handleClick}>
-          {isFilled ? <HeartFilled /> : <HeartOutlined />}
+          {isFilled ? (
+            <HeartFilled style={{ color: "red" }} />
+          ) : (
+            <HeartOutlined />
+          )}
           Favorites
         </StyledButton>
       </div>

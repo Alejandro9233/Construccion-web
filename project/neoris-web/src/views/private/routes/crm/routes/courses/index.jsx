@@ -4,6 +4,7 @@ import CoursesCard from "./components/coursesCard";
 
 const Courses = ({ user }) => {
   const [search, setSearch] = useState("");
+  const [isFilled, setIsFilled] = useState(false);
   return (
     <div
       style={{
@@ -13,8 +14,18 @@ const Courses = ({ user }) => {
         alignContent: "center",
       }}
     >
-      <Menu sty search={search} setSearch={setSearch} />
-      <CoursesCard user={user} search={search} />
+      <Menu
+        sty
+        search={search}
+        setSearch={setSearch}
+        isFilled={isFilled}
+        setIsFilled={setIsFilled}
+      />
+      <CoursesCard
+        user={user}
+        search={search}
+        favorites={isFilled}
+      />
     </div>
   );
 };
