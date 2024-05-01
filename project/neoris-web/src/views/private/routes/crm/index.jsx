@@ -4,7 +4,6 @@ import TopBarProgress from "react-topbar-progress-indicator";
 import Loadable from "react-loadable";
 
 
-const user = "admin";
 
 //Client Routes
 const Profile = Loadable({
@@ -28,8 +27,8 @@ const Users = Loadable({
   loading: TopBarProgress,
 });
 
-const Dash = () => {
-  if (user === "admin") {
+const Dash = ({ user }) => {
+  if (user?.es_admin)  {
     return (
       <Switch>
         <Route path="/dashboard">
