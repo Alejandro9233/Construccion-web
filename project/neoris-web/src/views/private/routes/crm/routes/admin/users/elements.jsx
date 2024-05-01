@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Typography, Tag as AntTag } from "antd";
+import { Typography, Tag as AntTag, Table } from "antd";
 
 const { Text } = Typography;
 
@@ -12,6 +12,23 @@ const StyledTitle = styled(Text)`
   letter-spacing: -0.4px;
   width: 100%;
 `;
+
+const StyledTable = styled(Table)`
+  &.custom-table {
+    .ant-table-cell {
+      border-bottom: none;
+    }
+
+    .ant-table-row {
+      border: none;
+    }
+
+    .ant-table-thead .ant-table-cell {
+      background-color: white;
+    }
+  }
+`;
+
 
 const StyledTag = styled(AntTag)`
   color: #080B0D;
@@ -60,4 +77,6 @@ const RowInfo = styled.div`
   }
 `;
 
-export { TableContainer, RowInfo, StyledTitle, StyledTag};
+
+
+export { TableContainer, RowInfo, StyledTitle, StyledTag, StyledTable};

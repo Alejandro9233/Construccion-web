@@ -2,11 +2,7 @@ import React from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { TitleContainer, StyledTitle, StyledButton } from "./elements";
 
-
-
-
-
-const TableTitle = () => {
+const TableTitle = ({ showDrawer }) => {
   return (
     <TitleContainer>
           <StyledTitle style={{ margin: "auto 5px" }} level={3}>
@@ -17,9 +13,7 @@ const TableTitle = () => {
         type="primary"
         icon={<PlusOutlined />}
         size="large"
-        onClick={() => {
-          console.log("Agregar Usuarios");
-        }}
+        onClick={showDrawer}
       >
         Agregar Usuarios
       </StyledButton>

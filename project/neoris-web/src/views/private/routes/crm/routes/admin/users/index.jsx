@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  Table,
   Button,
   Row,
   Typography,
@@ -10,12 +9,40 @@ import {
 } from "antd";
 import TableTitle from "./table-title";
 import UserDrawer from "./userDrawer";
-import { TableContainer, StyledTitle, StyledTag } from "./elements";
+import UserModal from "./userModal";
+import { TableContainer, StyledTitle, StyledTag, StyledTable } from "./elements";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+
 
 const { Text } = Typography;
 
 const Users = () => {
+  const [drawerVisible, setDrawerVisible] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleButtonClick = (record) => {
+    console.log("record", record); 
+  };
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const showDrawer = () => {
+    setDrawerVisible(true);
+  };
+
+  const onClose = () => {
+    setDrawerVisible(false);
+  };
+
   const [pageConfig, setPageConfig] = useState({
     pageSize: 20,
     page: 1,
@@ -27,19 +54,19 @@ const Users = () => {
         {
           id: 1,
           img: "https://via.placeholder.com/150",
-          firstName: "Juan",
+          firstName: "Luis",
           lastName: "Pérez",
         },
         {
-          id: 1,
+          id: 2,
           img: "https://via.placeholder.com/150",
-          firstName: "Juan",
+          firstName: "Checo",
           lastName: "Pérez",
         },
         {
-          id: 1,
+          id: 3,
           img: "https://via.placeholder.com/150",
-          firstName: "Juan",
+          firstName: "Ana",
           lastName: "Pérez",
         },
         // Agrega más usuarios aquí
@@ -90,19 +117,21 @@ const Users = () => {
       ),
       key: "action",
       width: 180,
-      render: (row) => (
+      render: (row, record) => (
         <Row style={{
           marginLeft: -13,
         }}>
           <Tooltip placement="top" title="Editar">
             <Button
+              id="edit-button"
               shape="circle"
               size="large"
               type="primary"
               style={{ margin: 5 }}
               icon={<EditOutlined style={{ color: "white" }} />}
               onClick={() => {
-                message.info("Editar usuario");
+                handleButtonClick(record);
+                showModal();
               }}
             />
           </Tooltip>
@@ -139,13 +168,17 @@ const Users = () => {
     },
   ];
 
+
+
   return (
     <>
-    <UserDrawer />
+    <UserModal isModalOpen={isModalOpen} onOk={handleOk} onCancel={handleCancel}/>
+    <UserDrawer visible={drawerVisible} onClose={onClose}/>
     <TableContainer>
-      <Table
+      <StyledTable
+        className="custom-table"
         locale="es"
-        title={() => <TableTitle />}
+        title={() => <TableTitle  showDrawer={showDrawer}/>}
         dataSource={usersData?.users?.results || []}
         columns={columns}
         rowKey="id"

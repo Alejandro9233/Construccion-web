@@ -1,79 +1,120 @@
 import React from 'react'
-import { Drawer, Form, Input, Button } from 'antd'
-import { useState } from 'react'
-import { Text, StyledFormItem } from './elements'
+import { Drawer, Form, Input } from 'antd'
+import { StyledFormItem, StyledButton } from './elements'
 
+const SubmitButton = ({ form, children }) => {
+  const [submittable, setSubmittable] = React.useState(false);
 
-const UserDrawer = () => {
-  const [open, setOpen] = useState(false);
-  const showDrawer = () => {
-    setOpen(true);
-  };
-  const onClose = () => {
-    setOpen(false);
-  };
+  // Watch all values
+  const values = Form.useWatch([], form);
+  React.useEffect(() => {
+    form
+      .validateFields({
+        validateOnly: true,
+      })
+      .then(() => setSubmittable(true))
+      .catch(() => setSubmittable(false));
+  }, [form, values]);
+  return (
+    <StyledButton type="primary" size='large' htmlType="submit" disabled={!submittable}>
+      {children}
+    </StyledButton>
+  );
+};
+
+const UserDrawer = ({ visible, onClose }) => {
+  const [form] = Form.useForm();
 
   return (
     <>
-    <Button type="primary" onClick={showDrawer}>
-        Open
-      </Button>
-    <Drawer title="EditCreateUser" onClose={onClose} open={open} style={{width:'400px'}}>
-      <Form 
-          validateTrigger="onSubmit"
+    <Drawer 
+      onClose={onClose}
+      visible={visible} 
+      title={<span style={{
+      fontFamily: 'DM Sans',
+      color: '#1B242A',
+      fontSize: '36px',
+      fontWeight: '700',
+      lineHeight: '56px', 
+      marginLeft: '15px'
+    }}>Create User</span>} size='large'>
+      <Form
+          form={form} 
+          name='validateOnly'
+          layout='vertical'
           autoComplete="off"
           style={{
             display: 'flex', 
             flexDirection:'column', 
             justifyContent:'space-between', 
-            gap:'10px',
-            width: '450px'
+            gap:'15px',
+            width: '100%'
          }}>
-          {/* <Text>Name*</Text> */}
-          <StyledFormItem
+      
+          <StyledFormItem 
+            style={{ marginTop: '-10px' }}
             name="name"
-            label="Name"
+            label={<span className="custom-label">Name</span>}
+            rules={[
+              {
+                required: true,
+              }
+            ]}
             >
             <Input size="large" placeholder="Enter your name"/>
           </StyledFormItem>
-          {/* <Text>Email*</Text> */}
+      
           <StyledFormItem
             name="email"
-            label="Email"
+            label={<span className="custom-label">Email</span>}
             rules={[
               {
                 type: 'email',
                 message: 'The input is not valid E-mail',
               },
+              {
+                required: true,
+              }
             ]}
             >
           <Input size="large" placeholder="Enter your email" /> 
           </StyledFormItem>
-          {/* <Text>Location*</Text> */}
+       
           <StyledFormItem
             name="location"
-            label="Location"
+            label={<span className="custom-label">Location</span>}
+            rules={[{
+              required: true
+            }]}
             >
             <Input size="large" placeholder="Enter your location" />
           </StyledFormItem>
-          {/* <Text>Department*</Text> */}
+       
           <StyledFormItem
             name="department"
-            label="Department"
+            label={<span className="custom-label">Department</span>}
+            rules={[{
+              required: true
+            }]
+            }
             >
             <Input size="large" placeholder="Enter your department" />
           </StyledFormItem>
-          {/* <Text>Job Position*</Text> */}
+        
           <StyledFormItem
             name="jobPosition"
-            label="Job Position"
+            label={<span className="custom-label">Job Position</span>}
+            rules={[{
+              required: true
+            }]
+            }
             >
             <Input size="large" placeholder="Enter your job position" />
           </StyledFormItem>
-          {/* <Text>Password*</Text> */}
+        
           <StyledFormItem
             name="password"
-            label="Password"
+            label={<span className="custom-label">Password</span>}
             rules={[
               {
                 validator(rule, value) {
@@ -86,13 +127,16 @@ const UserDrawer = () => {
                     }
                   })
                 }
+              },
+              {
+                required: true,
               }
             ]}
             >
             <Input.Password size="large" placeholder="Enter your password" />
           </StyledFormItem>
           <StyledFormItem>
-            <Button type="primary" size="large" htmlType="submit">Create Account</Button>
+            <SubmitButton type="primary" size="large" form={form}>Create Account</SubmitButton>
           </StyledFormItem>
          </Form>
     </Drawer>
