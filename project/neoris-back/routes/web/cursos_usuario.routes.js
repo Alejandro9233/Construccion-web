@@ -45,4 +45,8 @@ router.put(
   cursosUsuarioControllers.actualizarCursoEsFavorito
 );
 
+
+router.get('/favorite-courses/:id_user', cursosUsuarioControllers.getFavoriteCourses)
+
 module.exports = router;
+

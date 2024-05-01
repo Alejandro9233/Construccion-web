@@ -18,6 +18,7 @@ router.get('/promedio-avance/:id_user', perfilController.getAvance);
     "imagen": "https://i.blogs.es/1d8a5b/python1/450_1000.jpg"
     "link_al_curso": "URL"
     "porcentaje_pogreso": 5
+    "id_curso": 5
 }
 */
 router.get('/listado-cursos-web-card/:id_user', perfilController.getListadoCursosWebCard); // nuevo
