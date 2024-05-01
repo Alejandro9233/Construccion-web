@@ -28,4 +28,6 @@ router.put('/actualizar-progreso-curso/:id_user/:id_course/:new_progress', curso
 */
 router.put('/actualizar-favorito/:id_user/:id_course/:is_favorite', cursosUsuarioControllers.actualizarCursoEsFavorito);
 
+router.get('/favorite-courses/:id_user', cursosUsuarioControllers.getFavoriteCourses)
+
 module.exports = router;

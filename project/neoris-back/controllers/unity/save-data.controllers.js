@@ -24,7 +24,7 @@ async function updateSaveData(req, res) {
         console.error('Error put save data:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     } finally {
-        db.closeConnection();
+        await db.closeConnection();
     }
 }
 
@@ -40,7 +40,7 @@ async function getSaveData(req, res) {
         console.error('Error getting save data:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     } finally {
-        db.closeConnection();
+        await db.closeConnection();
     }
 }
 

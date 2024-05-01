@@ -14,8 +14,30 @@ async function getCursos(req, res) {
         console.error('Error getting cursos:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     } finally {
-        db.closeConnection();
+        await db.closeConnection();
     }
 }
 
-module.exports = { getCursos };
+// Actualizar estrellas
+async function actualizarEstrellasReclamadas(req, res) {
+    try {
+        const pool = await db.getConnection();
+        const result = await pool
+        .request()
+        .input('id_user', mssql.Int, req.body.id_user)
+        .input('course_name', mssql.NVarChar, req.body.course_name)
+        .query('EXEC UpdateEstrellasReclamadas @UserID = @id_user, @CourseName = @course_name;');
+        res.json({
+            "message": "Estrellas reclamdas actualizadas",
+            "result": result
+        });
+    } catch (error) {
+        console.error('Error actualizando estrellas reclamadas:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    } finally {
+        await db.closeConnection();
+    }
+}
+
+
+module.exports = { getCursos, actualizarEstrellasReclamadas };

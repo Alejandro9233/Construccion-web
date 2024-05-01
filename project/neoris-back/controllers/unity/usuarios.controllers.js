@@ -18,7 +18,7 @@ async function getLeaderboard(req, res) {
         console.error('Error fetching leaderboard:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     } finally {
-        db.closeConnection();
+        await db.closeConnection();
     }
 }
 
@@ -31,7 +31,7 @@ async function getPrueba(req, res) {
         console.error('Error fetching leaderboard:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     } finally {
-        db.closeConnection();
+        await db.closeConnection();
     }
 }
 
