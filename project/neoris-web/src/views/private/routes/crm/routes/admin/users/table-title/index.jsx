@@ -1,36 +1,22 @@
-import React, { useState } from "react";
-import { InfoCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { Tooltip, Typography, Button } from "antd";
-import { DescriptionContainer, TitleContainer } from "./elements";
+import React from "react";
+import { PlusOutlined } from "@ant-design/icons";
+import { TitleContainer, StyledTitle, StyledButton } from "./elements";
 
-const { Title } = Typography;
-
-const description = `
-Usuarios
-`;
-
-const TableTitle = () => {
+const TableTitle = ({ showDrawer }) => {
   return (
     <TitleContainer>
-      <Tooltip autoAdjustOverflow placement="rightTop" title={description}>
-        <DescriptionContainer style={{ marginRight: 20 }}>
-          <Title style={{ margin: "auto 5px" }} level={3}>
+          <StyledTitle style={{ margin: "auto 5px" }} level={3}>
             Usuarios
-          </Title>
-          <InfoCircleOutlined />
-        </DescriptionContainer>
-      </Tooltip>
+          </StyledTitle>
 
-      <Button
+      <StyledButton
         type="primary"
         icon={<PlusOutlined />}
-        style={{ marginLeft: "20px" }}
-        onClick={() => {
-          console.log("Agregar Usuarios");
-        }}
+        size="large"
+        onClick={showDrawer}
       >
         Agregar Usuarios
-      </Button>
+      </StyledButton>
     </TitleContainer>
   );
 };

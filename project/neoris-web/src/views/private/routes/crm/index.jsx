@@ -3,6 +3,8 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import TopBarProgress from "react-topbar-progress-indicator";
 import Loadable from "react-loadable";
 
+
+
 //Client Routes
 const Profile = Loadable({
   loader: () => import("./routes/dashboard"),
@@ -31,7 +33,7 @@ const Users = Loadable({
 });
 
 const Dash = ({ user }) => {
-  if (user?.es_admin) {
+  if (user?.es_admin)  {
     return (
       <Switch>
         <Route path="/dashboard">

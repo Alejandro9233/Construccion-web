@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import {
-  Tag,
-  Table,
   Button,
   Row,
   Typography,
@@ -10,12 +8,41 @@ import {
   message,
 } from "antd";
 import TableTitle from "./table-title";
-import { TableContainer } from "./elements";
+import UserDrawer from "./userDrawer";
+import UserModal from "./userModal";
+import { TableContainer, StyledTitle, StyledTag, StyledTable } from "./elements";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
-const { Title, Text } = Typography;
+
+const { Text } = Typography;
 
 const Users = () => {
+  const [drawerVisible, setDrawerVisible] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleButtonClick = (record) => {
+    console.log("record", record); 
+  };
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const showDrawer = () => {
+    setDrawerVisible(true);
+  };
+
+  const onClose = () => {
+    setDrawerVisible(false);
+  };
+
   const [pageConfig, setPageConfig] = useState({
     pageSize: 20,
     page: 1,
@@ -27,7 +54,19 @@ const Users = () => {
         {
           id: 1,
           img: "https://via.placeholder.com/150",
-          firstName: "Juan",
+          firstName: "Luis",
+          lastName: "Pérez",
+        },
+        {
+          id: 2,
+          img: "https://via.placeholder.com/150",
+          firstName: "Checo",
+          lastName: "Pérez",
+        },
+        {
+          id: 3,
+          img: "https://via.placeholder.com/150",
+          firstName: "Ana",
           lastName: "Pérez",
         },
         // Agrega más usuarios aquí
@@ -41,7 +80,9 @@ const Users = () => {
   // Table Columns
   const columns = [
     {
-      title: "USUARIO",
+      title: () => (
+        <StyledTitle>USUARIO</StyledTitle>
+      ),
       align: "left",
       key: "user",
 
@@ -56,36 +97,41 @@ const Users = () => {
       },
     },
     {
-      title: "NOMBRE",
+      title: () => (
+        <StyledTitle>NOMBRE</StyledTitle>
+      ),
       key: "name",
 
       render: (row) => (
-        <Tag color="blue">{row?.firstName + " " + row?.lastName}</Tag>
+        <StyledTag bordered={false} >{row?.firstName + " " + row?.lastName}</StyledTag>
       ),
     },
     {
       title: () => (
-        <Title
+        <StyledTitle
           level={4}
           strong
-          style={{ marginTop: "auto", marginBottom: "auto" }}
         >
-          Acciones
-        </Title>
+          ACCIONES
+        </StyledTitle>
       ),
       key: "action",
       width: 180,
-      render: (row) => (
-        <Row>
+      render: (row, record) => (
+        <Row style={{
+          marginLeft: -13,
+        }}>
           <Tooltip placement="top" title="Editar">
             <Button
+              id="edit-button"
               shape="circle"
               size="large"
               type="primary"
               style={{ margin: 5 }}
               icon={<EditOutlined style={{ color: "white" }} />}
               onClick={() => {
-                message.info("Editar usuario");
+                handleButtonClick(record);
+                showModal();
               }}
             />
           </Tooltip>
@@ -93,9 +139,9 @@ const Users = () => {
             <Button
               shape="circle"
               size="large"
-              type="danger"
-              style={{ margin: 5 }}
-              icon={<DeleteOutlined style={{ color: "white" }} />}
+              danger
+              style={{ margin: 5, backgroundColor: "white", outline: "red"}}
+              icon={<DeleteOutlined style={{ color: "red" }} />}
               onClick={() => {
                 Modal.confirm({
                   maskClosable: true,
@@ -122,11 +168,17 @@ const Users = () => {
     },
   ];
 
+
+
   return (
+    <>
+    <UserModal isModalOpen={isModalOpen} onOk={handleOk} onCancel={handleCancel}/>
+    <UserDrawer visible={drawerVisible} onClose={onClose}/>
     <TableContainer>
-      <Table
+      <StyledTable
+        className="custom-table"
         locale="es"
-        title={() => <TableTitle />}
+        title={() => <TableTitle  showDrawer={showDrawer}/>}
         dataSource={usersData?.users?.results || []}
         columns={columns}
         rowKey="id"
@@ -147,6 +199,7 @@ const Users = () => {
         }}
       />
     </TableContainer>
+    </>
   );
 };
 

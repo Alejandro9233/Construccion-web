@@ -18,7 +18,7 @@ const Private = () => {
     }
   }, [user]);
 
-  if (!user) {
+  if (user) {
     return (
       <AuthLayout>
         <Authentication setUser={setUser} />
