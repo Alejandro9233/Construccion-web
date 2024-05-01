@@ -94,4 +94,19 @@ async function eliminarUsuario(req, res){
     }
 }
 
-module.exports = { crearUsuario, modificarUsuario, eliminarUsuario };
+async function listarUsuarios(req, res){
+    try {
+        const pool = await db.getConnection();
+        const result = await pool
+        .request()
+        .query('EXEC listar_usuarios;');
+        res.json(result.recordset);
+    } catch (error) {
+        console.error('Error listing users:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    } finally {
+        await db.closeConnection();
+    }
+}
+
+module.exports = { crearUsuario, modificarUsuario, eliminarUsuario, listarUsuarios };

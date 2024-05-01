@@ -10,4 +10,7 @@ router.put('/modificar-usuarios', usuariosAdminController.modificarUsuario);
 // Se marca a un usuario como eliminado
 router.put('/eliminar-usuario/:id_user', usuariosAdminController.eliminarUsuario);
 
+// Listar todos los usuarios no eliminados para mostrarlos en el dashboard
+router.get('/listar-usuarios', usuariosAdminController.listarUsuarios);
+
 module.exports = router;
