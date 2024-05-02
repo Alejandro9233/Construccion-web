@@ -21,14 +21,14 @@ router.get('/conexiones-por-fecha', dashboardAdminController.getConexionesPorFec
 */
 router.get('/cursos-populares', dashboardAdminController.getCursosPopulares);
 
-// Horas de juego (de todos los usuarios) promedio por fecha
+// minutos de juego (de todos los usuarios) promedio por fecha
 /* Arreglo de objetos en el siguiente formato:
 {
     "fecha": "2024-04-23T00:00:00.000Z",
-    "promedio_horas_de_juego": 25
+    "promedio_minutos_de_juego": 25
 }
 */
-router.get('/horas-juego-por-fecha', dashboardAdminController.getHorasJuegoPromedioPorFecha);
+router.get('/minutos-juego-por-fecha', dashboardAdminController.getMinutosJuegoPromedioPorFecha);
 
 // Promedio total de progreso de todos los usuarios en todos los cursos
 /* JSON con un solo objeto en el siguiente formato:

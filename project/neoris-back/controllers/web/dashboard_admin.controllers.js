@@ -28,14 +28,14 @@ async function getCursosPopulares(req, res) {
     }
 }
 
-// get horas de juego promedio por fecha
-async function getHorasJuegoPromedioPorFecha(req, res) {
+// get minutos de juego promedio por fecha
+async function getMinutosJuegoPromedioPorFecha(req, res) {
     try {
         const pool = await db.getConnection();
-        const result = await pool.request().query('EXEC horas_juego_por_fecha;');
+        const result = await pool.request().query('EXEC minutos_juego_por_fecha;');
         res.json(result.recordset);
     } catch (error) {
-        console.error('Error fetching horas de juego promedio por fecha:', error);
+        console.error('Error fetching minutos de juego promedio por fecha:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     } finally {
         await db.closeConnection();
@@ -70,4 +70,4 @@ async function getUsuariosNoAdmins(req, res) {
     }
 }
 
-module.exports = {getConexionesPorFecha, getCursosPopulares, getHorasJuegoPromedioPorFecha, getPromedioTotalProgreso, getUsuariosNoAdmins}
+module.exports = {getConexionesPorFecha, getCursosPopulares, getMinutosJuegoPromedioPorFecha, getPromedioTotalProgreso, getUsuariosNoAdmins}
