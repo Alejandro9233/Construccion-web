@@ -17,7 +17,7 @@ const UserModal = ({ isModalOpen, setIsModalOpen, selectedUser, refetch }) => {
         profilePicture: selectedUser?.foto_de_perfil,
       });
     }
-  }, [selectedUser]);
+  }, [selectedUser, form]);
 
   const updateUser = async (values) => {
     const payload = {
