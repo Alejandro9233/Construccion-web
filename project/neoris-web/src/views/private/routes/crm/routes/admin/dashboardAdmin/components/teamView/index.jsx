@@ -104,7 +104,6 @@ const TeamView = () => {
       </Row>
       <div
         style={{
-          marginTop: "20px",
           display: "flex",
           justifyContent: "flex-end",
           width: "100%",

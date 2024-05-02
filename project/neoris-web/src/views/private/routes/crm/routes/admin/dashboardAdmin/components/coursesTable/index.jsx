@@ -96,7 +96,8 @@ const CoursesTable = ({ user }) => {
       />
       <div
         style={{
-          marginTop: "20px",
+          marginTop: "60px",
+          marginBottom: "10px",
           display: "flex",
           justifyContent: "flex-end",
           width: "100%",

@@ -4,7 +4,7 @@ import { Typography, Tag as AntTag, Table } from "antd";
 const { Text } = Typography;
 
 const StyledTitle = styled(Text)`
-  color: #A3AED0;;
+  color: #a3aed0;
   font-size: 16px;
   font-style: normal;
 
@@ -27,11 +27,14 @@ const StyledTable = styled(Table)`
       background-color: white;
     }
   }
+
+  .ant-table {
+    overflow-x: hidden;
+  }
 `;
 
-
 const StyledTag = styled(AntTag)`
-  color: #080B0D;
+  color: #080b0d;
   font-size: 18px;
   font-style: normal;
   font-weight: 600;
@@ -41,7 +44,6 @@ const StyledTag = styled(AntTag)`
   margin-left: -10px;
   padding: 0px;
 `;
-
 
 const TableContainer = styled.div`
   padding: 20px;
@@ -77,6 +79,4 @@ const RowInfo = styled.div`
   }
 `;
 
-
-
-export { TableContainer, RowInfo, StyledTitle, StyledTag, StyledTable};
+export { TableContainer, RowInfo, StyledTitle, StyledTag, StyledTable };
