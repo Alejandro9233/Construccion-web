@@ -7,7 +7,7 @@ const StyledDiv = styled.div`
   border-radius: 30px;
   background: #fff;
   box-shadow: 14px 17px 40px 4px rgba(112, 144, 176, 0.08);
-  padding: 0;
+  padding: 10px;
   width: 100%;
   display: flex;
   flex-direction: column;

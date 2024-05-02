@@ -117,6 +117,24 @@ async function actualizarCursoEsFavorito(req, res) {
   }
 }
 
+
+// conseguir la lista de cursos 
+async function getFavoriteCourses(req, res) {
+    try {
+        const pool = await db.getConnection();
+        const result = await pool
+        .request()
+        .input('id_user', mssql.Int, req.params.id_user)
+        .query('EXEC favorite_courses @id_usuario = @id_user;');
+        res.json(result.recordset);
+    } catch (error) {
+        console.error('Error fetching favorite courses:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    } finally {
+        await db.closeConnection();
+    }
+}
+
 module.exports = {
   getCursosUsuario,
   crearProgresoCurso,

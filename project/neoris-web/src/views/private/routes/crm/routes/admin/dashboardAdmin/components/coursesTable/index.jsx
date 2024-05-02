@@ -1,9 +1,12 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { StyledDiv, StyledTitle, StyledTable, StyledText } from "./elements";
 import { Button } from "antd";
 import { ArrowRightOutlined, CheckCircleTwoTone } from "@ant-design/icons";
+import AllCoursesDrawer from "./components/allCourses-Drawer";
 
-const CoursesTable = ({user}) => {
+const CoursesTable = ({ user }) => {
+  const [visible, setVisible] = useState(false);
+
   const columns = [
     {
       title: <StyledText>Course Name</StyledText>,
@@ -26,7 +29,9 @@ const CoursesTable = ({user}) => {
       align: "center",
       key: "average progress",
 
-      render: (row) => <StyledTitle>{row?.porcentaje_progreso_promedio + "%"}</StyledTitle>,
+      render: (row) => (
+        <StyledTitle>{row?.porcentaje_progreso_promedio + "%"}</StyledTitle>
+      ),
     },
     {
       title: <StyledText>Completed</StyledText>,
@@ -36,10 +41,11 @@ const CoursesTable = ({user}) => {
       render: (row) => (
         <StyledTitle style={{ color: "#87d068" }}>
           {" "}
-          <CheckCircleTwoTone twoToneColor="#87d068" /> {row?.cursos_completados}
+          <CheckCircleTwoTone twoToneColor="#87d068" />{" "}
+          {row?.cursos_completados}
         </StyledTitle>
       ),
-    }    
+    },
   ];
 
   // Use state para guardar los cursos y use effect para fetchearlos
@@ -57,7 +63,7 @@ const CoursesTable = ({user}) => {
           console.log(err);
         });
     };
-  fetchData();
+    fetchData();
   }, [user]);
 
   return (
@@ -90,16 +96,26 @@ const CoursesTable = ({user}) => {
       />
       <div
         style={{
-          marginTop: "20px",
+          marginTop: "60px",
+          marginBottom: "10px",
           display: "flex",
           justifyContent: "flex-end",
           width: "100%",
         }}
       >
-        <Button icon={<ArrowRightOutlined />} style={{ border: "none" }}>
+        <Button
+          icon={<ArrowRightOutlined />}
+          style={{ border: "none" }}
+          onClick={() => setVisible(true)}
+        >
           View All
         </Button>
       </div>
+      <AllCoursesDrawer
+        visible={visible}
+        setVisible={setVisible}
+        data={popularCourses}
+      />
     </StyledDiv>
   );
 };

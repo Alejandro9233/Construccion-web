@@ -1,96 +1,127 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { StyledDiv, StyledTitle, StyledText } from "./elements";
 import { Row, Col, Image, Tooltip, Button } from "antd";
 import { AlertTwoTone, ArrowRightOutlined } from "@ant-design/icons";
+import { useQuery } from "react-query";
+import moment from "moment";
+import AllUsersDrawer from "./components/allUsers-Drawer";
 
-const getStatusColor = (status) => {
-  switch (status) {
-    case "Ok":
-      return "#87d068";
-    case "Busy":
-      return "red";
-    case "Away":
-      return "yellow";
-    default:
-      return "gray";
-  }
-};
-
-const UserCard = ({ foto_de_perfil, nombre_usuario, puesto }) => (
-  <div style={{ width: "100%" }}>
-    <Row justify={"space-between"} align={"middle"}>
-      <Row align={"middle"}>
-        <Image
-          preview={false}
-          src={foto_de_perfil ? foto_de_perfil : "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"}
-          style={{ borderRadius: "50%", width: "3vw", aspectRatio: "1/1", objectFit: "cover" }}
-        />
-        <Col
-          style={{
-            marginLeft: "15px",
-            display: "flex",
-            flexDirection: "column",
-            gap: "-5px",
-            height: "80%",
-          }}
-        >
-          <StyledTitle style={{ fontSize: "16px" }}>{nombre_usuario}</StyledTitle>
-          <StyledText>{puesto}</StyledText>
-        </Col>
-      </Row>
-      <Tooltip title={`Status: `}>
-        <AlertTwoTone
-          // twoToneColor={getStatusColor(status)}
-          style={{ fontSize: "20px" }}
-        />
-      </Tooltip>
-    </Row>
-  </div>
-);
-
-const TeamView = ({user}) => {
-  // Use state para guardar los ususarios que no son admins y no están eliminados
-  // Datos de respuesta: nombre_usuario, foto_de_perfil, puesto
-  const [teamUsers, setTeamUsers] = useState([]);
+const UserCard = ({ foto_de_perfil, nombre_usuario, ultima_conexion }) => {
+  const [status, setStatus] = useState({});
 
   useEffect(() => {
-    const fetchData = async () => {
-      await fetch(`http://localhost:5000/usuarios-no-admins`)
-        .then((res) => res.json())
-        .then((data) => {
-          setTeamUsers(data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
-  fetchData();
+    const daysAgo = moment().diff(moment(ultima_conexion), "days");
 
-  }, [user]);
+    if (daysAgo < 2) {
+      setStatus({ status: "Active", color: "#87d068" });
+    } else if (daysAgo < 3) {
+      setStatus({ status: "Low Active", color: "#FFC000" });
+    } else {
+      setStatus({ status: "Inactive", color: "red" });
+    }
+  }, [ultima_conexion]);
+
+  return (
+    <div style={{ width: "100%" }}>
+      <Row justify={"space-between"} align={"middle"}>
+        <Row align={"middle"}>
+          <Image
+            preview={false}
+            src={
+              foto_de_perfil
+                ? foto_de_perfil
+                : "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"
+            }
+            style={{
+              borderRadius: "50%",
+              width: "3vw",
+              aspectRatio: "1/1",
+              objectFit: "cover",
+            }}
+          />
+          <Col
+            style={{
+              marginLeft: "15px",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <div style={{ marginBottom: "0" }}>
+              <StyledTitle style={{ fontSize: "16px" }}>
+                {nombre_usuario}
+              </StyledTitle>
+            </div>
+            <div style={{ marginTop: "-5px" }}>
+              <StyledText>{moment(ultima_conexion).fromNow()}</StyledText>
+            </div>
+          </Col>
+        </Row>
+        <Tooltip title={`Status: ${status?.status}`}>
+          <AlertTwoTone
+            twoToneColor={status?.color}
+            style={{ fontSize: "25px" }}
+          />
+        </Tooltip>
+      </Row>
+    </div>
+  );
+};
+
+const TeamView = () => {
+  const [visible, setVisible] = useState(false);
+
+  const fetchTeamUsers = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/usuarios-no-admins", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Error al obtener usuarios");
+      }
+      return response.json();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const { data: teamUsers } = useQuery("teamUsers", fetchTeamUsers);
 
   return (
     <StyledDiv>
       <StyledTitle>Your Team</StyledTitle>
       <Row
-        style={{ width: "100%", marginTop: "10px" }}
+        style={{ width: "100%", marginTop: "40px" }}
         justify={"space-between"}
       >
         {teamUsers?.slice(0, 4).map((member, index) => (
-          <UserCard key={index} {...member} />
+          <div style={{ width: "100%", marginBottom: "20px" }}>
+            <UserCard key={index} {...member} />
+          </div>
         ))}
       </Row>
       <div
         style={{
-          marginTop: "20px",
           display: "flex",
           justifyContent: "flex-end",
           width: "100%",
         }}
       >
-        <Button icon={<ArrowRightOutlined />} style={{ border: "none" }}>
+        <Button
+          icon={<ArrowRightOutlined />}
+          style={{ border: "none" }}
+          onClick={() => setVisible(true)}
+        >
           View All
         </Button>
       </div>
+      <AllUsersDrawer
+        visible={visible}
+        setVisible={setVisible}
+        data={teamUsers}
+      />
     </StyledDiv>
   );
 };

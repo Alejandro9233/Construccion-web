@@ -24,16 +24,17 @@ function AuthLayout({ children }) {
     }}>
     <Container>
         <div style={{display: 'flex', flexDirection: "column",  alignItems:'center', height:'100%', justifyContent:'space-between'}}>
-        <Image
-            width={419}
-            height={359}
-            src={logo}
-            preview={false}
-            style={{ 
-                margin: '0 auto', 
-                marginTop: '100px',
-                overflow: 'hidden'}}
-        /> 
+        <div style={{marginTop: '100px'}}>
+          <Image
+              width={400} // Adjust the width value to make the logo smaller
+              height={null} // Remove the height value to keep it proportional
+              src={logo}
+              preview={false}
+              style={{ 
+                  margin: '0 auto', 
+                  overflow: 'hidden'}}
+          /> 
+        </div>
         <Image
             width={350}
             height={70}
@@ -41,7 +42,7 @@ function AuthLayout({ children }) {
             preview={false}
             style={{ 
                 margin: '0 auto', 
-                marginTop: '-50px',}}
+                marginTop: '-20px'}}
         /> 
         <div style={{display: 'flex', flexDirection: 'row', alignItems: 'flex-end'}}>
           <Text className='footerRight'>License</Text>

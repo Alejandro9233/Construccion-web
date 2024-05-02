@@ -14,6 +14,7 @@ const routerPerfil = require('./routes/web/perfil.routes');
 const routerAutenticacion = require('./routes/web/autenticacion.routes');
 const routerCursosUsuario = require('./routes/web/cursos_usuario.routes');
 const routerLogs = require('./routes/unity/logs.routes')
+const routerUsuariosAdmin = require('./routes/web/usuarios_admin.routes')
 
 // Crear servidor
 const app = express();
@@ -32,6 +33,7 @@ app.use(routerAutenticacion);
 app.use(rotuerCursos);
 app.use(routerCursosUsuario);
 app.use(routerLogs);
+app.use(routerUsuariosAdmin);
 
 app.listen(5000, () => {
     console.log('Server is running on http://localhost:5000');
