@@ -8,11 +8,6 @@ const Login = Loadable({
   loading: TopBarProgress,
 });
 
-const Signup = Loadable({
-  loader: () => import("./routes/signup"),
-  loading: TopBarProgress,
-});
-
 const RecoverPasword = Loadable({
   loader: () => import("./routes/recover-password"),
   loading: TopBarProgress,
@@ -22,9 +17,6 @@ const Auth = ({setUser}) => (
   <Switch>
     <Route path="/login">
       <Login setUser={setUser}/>
-    </Route>
-    <Route path="/signup">
-      <Signup />
     </Route>
     <Route path="/recover">
       <RecoverPasword />

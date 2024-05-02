@@ -128,7 +128,7 @@ const Login = ({ setUser }) => {
           <Text className="text" style={{ marginRight: "5px" }}>
             Not registered yet?
           </Text>
-          <StyledLink to="/signup">Create an account</StyledLink>
+          <Text className="text" style={{fontWeight:'700'}}>Talk with your administrator</Text>
         </div>
       </Form>
     </div>
