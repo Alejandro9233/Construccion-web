@@ -3,10 +3,10 @@ import {Unity, useUnityContext} from "react-unity-webgl";
 
 const Game = ({user}) => {
   const { unityProvider, sendMessage } = useUnityContext({
-    loaderUrl: "/codersTycoon/build/codersTycoon.loader.js",
-    dataUrl: "/codersTycoon/build/codersTycoon.data",
-    frameworkUrl: "/codersTycoon/build/codersTycoon.framework.js",
-    codeUrl: "/codersTycoon/build/codersTycoon.wasm",
+    loaderUrl: "/codersTycoon1_1/build/codersTycoon1_1.loader.js",
+    dataUrl: "/codersTycoon1_1/build/codersTycoon1_1.data",
+    frameworkUrl: "/codersTycoon1_1/build/codersTycoon1_1.framework.js",
+    codeUrl: "/codersTycoon1_1/build/codersTycoon1_1.wasm",
   });
 
   function logIn() {
