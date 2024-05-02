@@ -63,15 +63,11 @@ const Login = ({ setUser }) => {
         <Text className="subtitle">
           Enter your email and password to sign in!
         </Text>
-        <Button type="primary" size="large">
-          Google
-        </Button>
         <Divider
           style={{
             margin: "4px",
           }}
         >
-          Or
         </Divider>
         <Text className="text">Email*</Text>
         <StyledFormItem
