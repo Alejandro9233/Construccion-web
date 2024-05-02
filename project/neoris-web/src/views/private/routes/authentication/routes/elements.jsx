@@ -46,6 +46,7 @@ const Text = styled(AntText)`
         line-height: 100%;
         letter-spacing: -0.28px;
     }
+
 `;
 
 
