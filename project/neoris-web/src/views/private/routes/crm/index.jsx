@@ -55,7 +55,7 @@ const Dash = ({ user }) => {
         <Courses user={user} />
       </Route>
       <Route path="/game">
-        <Game />
+        <Game user={user}/>
       </Route>
       <Redirect to="/profile" />
     </Switch>
