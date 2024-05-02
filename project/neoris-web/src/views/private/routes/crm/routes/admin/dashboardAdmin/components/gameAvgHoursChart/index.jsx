@@ -5,13 +5,13 @@ import { TrophyTwoTone } from "@ant-design/icons";
 import ReactApexChart from "react-apexcharts";
 
 const GameAvgHoursChart = ({user}) => {
-  // Use state para guardar las horas promedio dentro del juego por fecha
-  // Datos de respuesta: fecha, promedio_horas_de_juego
+  // Use state para guardar los minutos promedio dentro del juego por fecha
+  // Datos de respuesta: fecha, promedio_minutos_de_juego
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetch(`http://localhost:5000/horas-juego-por-fecha`)
+      await fetch(`http://localhost:5000/minutos-juego-por-fecha`)
         .then((res) => res.json())
         .then((data) => {
           setData(data);
@@ -26,7 +26,7 @@ const GameAvgHoursChart = ({user}) => {
 
   // conseguir los arreglos de los ejes verticales y horizontales para las tablas
   let dates = data ? data.map((item) => item.fecha) : [];
-  let hours = data ? data.map((item) => item.promedio_horas_de_juego) : [];
+  let hours = data ? data.map((item) => item.promedio_minutos_de_juego) : [];
 
   // función para quitarle la hora a las fechas
   function formatDate(dates) {
@@ -141,7 +141,7 @@ const GameAvgHoursChart = ({user}) => {
           }}
           series={[
             {
-              name: "Average Hours in Game",
+              name: "Average Minutes in Game",
               data: hours,
               color: "#90D7E7",
             },
