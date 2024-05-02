@@ -5,6 +5,7 @@ import { AlertTwoTone, ArrowRightOutlined } from "@ant-design/icons";
 import { useQuery } from "react-query";
 import moment from "moment";
 import AllUsersDrawer from "./components/allUsers-Drawer";
+import { getBackendUrl } from "../../../../../../../../../utils/config";
 
 const UserCard = ({ foto_de_perfil, nombre_usuario, ultima_conexion }) => {
   const [status, setStatus] = useState({});
@@ -72,7 +73,7 @@ const TeamView = () => {
 
   const fetchTeamUsers = async () => {
     try {
-      const response = await fetch("http://localhost:5000/usuarios-no-admins", {
+      const response = await fetch(`${getBackendUrl()}/usuarios-no-admins`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
