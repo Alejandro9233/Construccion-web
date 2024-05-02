@@ -6,13 +6,16 @@ const Login = ({ setUser }) => {
   const [form] = Form.useForm();
 
   const validateUser = async (values) => {
-    await fetch("http://localhost:5000/verificar-usuario", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    })
+    await fetch(
+      "https://construccion-web-backend.onrender.com/verificar-usuario",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         if (data[0].validacion === false) {
@@ -67,8 +70,7 @@ const Login = ({ setUser }) => {
           style={{
             margin: "4px",
           }}
-        >
-        </Divider>
+        ></Divider>
         <Text className="text">Email*</Text>
         <StyledFormItem
           name="email"
