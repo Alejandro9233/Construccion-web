@@ -17,9 +17,9 @@ const { Text } = Typography;
 const Users = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   const deleteUsers = async (id) => {
-    console.log(id);
     await fetch(`http://localhost:5000/eliminar-usuario/${id}`, {
       method: "PUT",
     })
@@ -50,7 +50,6 @@ const Users = () => {
     page: 1,
   });
 
-  console.log(data);
   // Table Columns
   const columns = [
     {
@@ -126,6 +125,7 @@ const Users = () => {
               icon={<EditOutlined style={{ color: "white" }} />}
               onClick={() => {
                 setIsModalOpen(true);
+                setSelectedUser(row);
               }}
             />
           </Tooltip>
@@ -192,7 +192,12 @@ const Users = () => {
           }}
         />
       </TableContainer>
-      <UserModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+      <UserModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        selectedUser={selectedUser}
+        refetch={refetch}
+      />
       <UserDrawer
         drawerVisible={drawerVisible}
         setDrawerVisible={setDrawerVisible}

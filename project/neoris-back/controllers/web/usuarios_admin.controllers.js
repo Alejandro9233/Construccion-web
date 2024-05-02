@@ -48,7 +48,6 @@ async function modificarUsuario(req, res) {
       .input("id_usuario", mssql.INT, req.body.id_usuario)
       .input("nombre_usuario", mssql.VARCHAR, req.body.nombre_usuario)
       .input("e_mail", mssql.NVARCHAR, req.body.e_mail)
-      .input("contrasena", mssql.NVARCHAR, req.body.contrasena)
       .input("ubicacion", mssql.NVARCHAR, req.body.ubicacion)
       .input("departamento", mssql.NVARCHAR, req.body.departamento)
       .input("puesto", mssql.NVARCHAR, req.body.puesto)
@@ -58,7 +57,6 @@ async function modificarUsuario(req, res) {
           "@id_usuario = @id_usuario, " +
           "@nombre_usuario = @nombre_usuario, " +
           "@e_mail = @e_mail, " +
-          "@contrasena = @contrasena, " +
           "@ubicación = @ubicacion, " +
           "@departamento = @departamento, " +
           "@puesto = @puesto, " +
