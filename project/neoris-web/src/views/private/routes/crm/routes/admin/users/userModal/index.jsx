@@ -1,8 +1,73 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyledFormItem } from "./elements";
-import { Form, Input, Modal } from "antd";
+import { Form, Input, Modal, message } from "antd";
 
-const UserModal = ({ isModalOpen, onOk, onCancel, userData }) => {
+const UserModal = ({ isModalOpen, setIsModalOpen, selectedUser, refetch }) => {
+  const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (selectedUser) {
+      form.setFieldsValue({
+        Name: selectedUser?.nombre_usuario,
+        Email: selectedUser?.e_mail,
+        Location: selectedUser?.ubicacion,
+        Department: selectedUser?.departamento,
+        JobPosition: selectedUser?.puesto,
+        profilePicture: selectedUser?.foto_de_perfil,
+      });
+    }
+  }, [selectedUser]);
+
+  const updateUser = async (values) => {
+    const payload = {
+      id_usuario: selectedUser?.id_usuario,
+      nombre_usuario: values?.Name || selectedUser?.nombre_usuario,
+      e_mail: values?.Email || selectedUser?.e_mail,
+      ubicacion: values?.Location || selectedUser?.ubicacion,
+      departamento: values?.Department || selectedUser?.departamento,
+      puesto: values?.JobPosition || selectedUser?.puesto,
+      foto_de_perfil: values?.profilePicture || selectedUser?.foto_de_perfil,
+    };
+
+    await fetch("http://localhost:5000/modificar-usuarios", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.result === false) {
+          throw new Error("Error updating user");
+        }
+        message.success("Usuario actualizado correctamente");
+      })
+      .catch(() => {
+        message.error("Ha ocurrido un error al actualizar el usuario");
+      });
+  };
+
+  const onCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const onOk = async () => {
+    setLoading(true);
+    try {
+      const values = form.getFieldsValue();
+      await updateUser(values);
+      await refetch();
+      setIsModalOpen(false);
+    } catch (error) {
+      message.error("Ha ocurrido un error al actualizar el usuario");
+    } finally {
+      setIsModalOpen(false);
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <Modal
@@ -20,9 +85,13 @@ const UserModal = ({ isModalOpen, onOk, onCancel, userData }) => {
         open={isModalOpen}
         onOk={onOk}
         onCancel={onCancel}
+        confirmLoading={loading}
         style={{ top: 20 }}
+        okText="Guardar"
+        cancelText="Cancelar"
       >
         <Form
+          form={form}
           name="validateOnly"
           layout="vertical"
           autoComplete="off"
@@ -69,32 +138,17 @@ const UserModal = ({ isModalOpen, onOk, onCancel, userData }) => {
           </StyledFormItem>
 
           <StyledFormItem
-            name="Job Position"
+            name="JobPosition"
             label={<span className="custom-label">Job Position</span>}
           >
             <Input placeholder="Enter your job position" />
           </StyledFormItem>
 
           <StyledFormItem
-            name="Password"
-            label={<span className="custom-label">Password</span>}
-            rules={[
-              {
-                validator(rule, value) {
-                  return new Promise((resolve, reject) => {
-                    if (/^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.{7,})/.test(value)) {
-                      resolve();
-                    } else {
-                      reject(
-                        "Password must be a minimum of 7 characters, have at least one uppercase letter and one special character"
-                      );
-                    }
-                  });
-                },
-              },
-            ]}
+            name="profilePicture"
+            label={<span className="custom-label">Profile Picture</span>}
           >
-            <Input.Password placeholder="Enter your password" />
+            <Input size="large" placeholder="Enter URL" />
           </StyledFormItem>
         </Form>
       </Modal>

@@ -46,6 +46,7 @@ const UserDrawer = ({ drawerVisible, setDrawerVisible, refetch }) => {
       const values = await form.validateFields();
       await createUsers(values);
       await refetch();
+      form.resetFields();
       setDrawerVisible(false);
     } catch (errorInfo) {
       message.error("Por favor, completa los campos requeridos");
@@ -55,6 +56,7 @@ const UserDrawer = ({ drawerVisible, setDrawerVisible, refetch }) => {
   };
 
   const onClose = () => {
+    form.resetFields();
     setDrawerVisible(false);
   };
 
