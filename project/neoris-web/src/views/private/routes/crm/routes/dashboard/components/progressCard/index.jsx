@@ -3,6 +3,7 @@ import { Image, Row, Button, Progress } from "antd";
 import { EllipsisOutlined } from "@ant-design/icons";
 import { StyledDiv, StyledImageDiv, StyledTitle, StyledText } from "./elements";
 import Cloud from "./cloud_done.png";
+import { getBackendUrl } from "../../../../../../../../utils/config";
 
 const ProgressCard = ({ user }) => {
   // Use state para guardar el progreso promedio de los cursos inscritos y use effect para hacer fetch a la api y obtener el progreso
@@ -11,7 +12,7 @@ const ProgressCard = ({ user }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetch(`http://localhost:5000/promedio-avance/${user?.id_usuario}`)
+      await fetch(`${getBackendUrl()}/promedio-avance/${user?.id_usuario}`)
         .then((res) => res.json())
         .then((data) => {
           setProgress(data);
@@ -49,7 +50,8 @@ const ProgressCard = ({ user }) => {
       >
         <StyledTitle>Your Progress</StyledTitle>
         <StyledText>
-          The easiest way to look at your average progress of all currently enrolled courses.
+          The easiest way to look at your average progress of all currently
+          enrolled courses.
         </StyledText>
       </div>
       <Progress

@@ -3,15 +3,16 @@ import { StyledDiv, StyledTitle, StyledText } from "./elements";
 import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
 import { Row, Statistic } from "antd";
 import ReactApexChart from "react-apexcharts";
+import { getBackendUrl } from "../../../../../../../../../utils/config";
 
-const GameTrafficChart = ({user}) => {
+const GameTrafficChart = ({ user }) => {
   // Use state para guardar las el tráfico dentro del juego por fecha
   // Datos de respuesta: log_date, cantidad_visitas
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetch(`http://localhost:5000/conexiones-por-fecha`)
+      await fetch(`${getBackendUrl()}/conexiones-por-fecha`)
         .then((res) => res.json())
         .then((data) => {
           setData(data);
@@ -21,7 +22,7 @@ const GameTrafficChart = ({user}) => {
         });
     };
 
-  fetchData();
+    fetchData();
   }, [user]);
 
   // conseguir los arreglos de los ejes verticales y horizontales para las tablas
@@ -31,20 +32,20 @@ const GameTrafficChart = ({user}) => {
   // función para quitarle la hora a las fechas
   function formatDate(dates) {
     let formattedDates = [];
-    dates.forEach(date => {
+    dates.forEach((date) => {
       formattedDates.push(date.split("T").shift());
     });
     return formattedDates;
-  };
+  }
 
   // Conseguir una suma total de los visitantes de los útlimos 7 días
-  function getTotalVisitors(visits){
+  function getTotalVisitors(visits) {
     let sum = 0;
-    visits.forEach(dailyVisits =>{
+    visits.forEach((dailyVisits) => {
       sum = dailyVisits + sum;
     });
     return sum;
-  };
+  }
 
   // Calcula el cambio de tráfico entre hoy y ayer
   const calculateChange = () => {
@@ -141,7 +142,7 @@ const GameTrafficChart = ({user}) => {
                     "#B0BBD5",
                     "#B0BBD5",
                     "#B0BBD5",
-                  ]
+                  ],
                 },
               },
             },

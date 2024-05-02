@@ -1,21 +1,19 @@
 import React from "react";
 import { Divider, Checkbox, Input, Form, message } from "antd";
 import { Button, Text, StyledLink, StyledFormItem } from "../elements";
+import { getBackendUrl } from "../../../../../../utils/config";
 
 const Login = ({ setUser }) => {
   const [form] = Form.useForm();
 
   const validateUser = async (values) => {
-    await fetch(
-      "https://construccion-web-backend.onrender.com/verificar-usuario",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      }
-    )
+    await fetch(`${getBackendUrl()}/verificar-usuario`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    })
       .then((res) => res.json())
       .then((data) => {
         if (data[0].validacion === false) {

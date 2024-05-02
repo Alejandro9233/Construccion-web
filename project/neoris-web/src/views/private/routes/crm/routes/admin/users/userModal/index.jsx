@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyledFormItem } from "./elements";
 import { Form, Input, Modal, message } from "antd";
+import { getBackendUrl } from "../../../../../../../../utils/config";
 
 const UserModal = ({ isModalOpen, setIsModalOpen, selectedUser, refetch }) => {
   const [form] = Form.useForm();
@@ -30,7 +31,7 @@ const UserModal = ({ isModalOpen, setIsModalOpen, selectedUser, refetch }) => {
       foto_de_perfil: values?.profilePicture || selectedUser?.foto_de_perfil,
     };
 
-    await fetch("http://localhost:5000/modificar-usuarios", {
+    await fetch(`${getBackendUrl()}/modificar-usuarios`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
