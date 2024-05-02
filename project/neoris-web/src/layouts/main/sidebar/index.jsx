@@ -14,7 +14,6 @@ const { Item } = Menu;
 
 const Sidebar = ({ user, setUser }) => {
   const history = useHistory();
-  const es_admin = "admin";
 
   const handleLogout = async () => {
     await setUser("");
@@ -200,7 +199,7 @@ const Sidebar = ({ user, setUser }) => {
           defaultSelectedKeys={[history.location.pathname.toLowerCase()]}
           selectedKeys={[history.location.pathname.toLowerCase()]}
         >
-          {es_admin ? routesAdmin : routes}
+          {user?.es_admin ? routesAdmin : routes}
         </Menu>
       </div>
       <div
