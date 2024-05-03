@@ -1,19 +1,20 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { StyledDiv, StyledTitle, StyledText } from "./elements";
 import { Row, Col, Progress, Tooltip } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
+import { getBackendUrl } from "../../../../../../../../../utils/config";
 
-const CoursesProgressChart = ({user}) => {
+const CoursesProgressChart = ({ user }) => {
   const context =
     "Lo que esta grafica representa es el progreso promedio de todos los cursos de los usuarios.";
-  
+
   // Use state para guardar el progreso promedio global y use effect para fetchearlo
   // Datos de respuesta: promedio_porcentaje_avance_total
   const [averageProgress, setAverageProgress] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetch(`http://localhost:5000/promedio-total-progreso`)
+      await fetch(`${getBackendUrl()}/promedio-total-progreso`)
         .then((res) => res.json())
         .then((data) => {
           setAverageProgress(data);
@@ -23,10 +24,13 @@ const CoursesProgressChart = ({user}) => {
         });
     };
 
-  fetchData();    
+    fetchData();
   }, [user]);
 
-  let averageGlobalProgress = averageProgress.length > 0 ? averageProgress[0].promedio_porcentaje_avance_total : 0;
+  let averageGlobalProgress =
+    averageProgress.length > 0
+      ? averageProgress[0].promedio_porcentaje_avance_total
+      : 0;
 
   return (
     <StyledDiv>

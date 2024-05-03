@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Drawer, Form, Input, message, Row, Col } from "antd";
 import { StyledFormItem, StyledButton } from "./elements";
+import { getBackendUrl } from "../../../../../../../../utils/config";
 
 const UserDrawer = ({ drawerVisible, setDrawerVisible, refetch }) => {
   const [form] = Form.useForm();
@@ -21,7 +22,7 @@ const UserDrawer = ({ drawerVisible, setDrawerVisible, refetch }) => {
       es_admin: false,
     };
 
-    await fetch("http://localhost:5000/creacion-usuario", {
+    await fetch(`${getBackendUrl()}/creacion-usuario`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

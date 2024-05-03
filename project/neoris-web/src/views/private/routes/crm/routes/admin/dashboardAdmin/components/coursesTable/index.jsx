@@ -3,6 +3,7 @@ import { StyledDiv, StyledTitle, StyledTable, StyledText } from "./elements";
 import { Button } from "antd";
 import { ArrowRightOutlined, CheckCircleTwoTone } from "@ant-design/icons";
 import AllCoursesDrawer from "./components/allCourses-Drawer";
+import { getBackendUrl } from "../../../../../../../../../utils/config";
 
 const CoursesTable = ({ user }) => {
   const [visible, setVisible] = useState(false);
@@ -54,7 +55,7 @@ const CoursesTable = ({ user }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetch(`http://localhost:5000/cursos-populares`)
+      await fetch(`${getBackendUrl()}/cursos-populares`)
         .then((res) => res.json())
         .then((data) => {
           setPopularCourses(data);

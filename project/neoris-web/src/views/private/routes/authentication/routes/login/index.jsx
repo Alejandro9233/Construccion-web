@@ -1,12 +1,13 @@
 import React from "react";
 import { Divider, Checkbox, Input, Form, message } from "antd";
 import { Button, Text, StyledLink, StyledFormItem } from "../elements";
+import { getBackendUrl } from "../../../../../../utils/config";
 
 const Login = ({ setUser }) => {
   const [form] = Form.useForm();
 
   const validateUser = async (values) => {
-    await fetch("http://localhost:5000/verificar-usuario", {
+    await fetch(`${getBackendUrl()}/verificar-usuario`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -67,8 +68,7 @@ const Login = ({ setUser }) => {
           style={{
             margin: "4px",
           }}
-        >
-        </Divider>
+        ></Divider>
         <Text className="text">Email*</Text>
         <StyledFormItem
           name="email"
@@ -128,7 +128,7 @@ const Login = ({ setUser }) => {
           <Text className="text" style={{ marginRight: "5px" }}>
             Not registered yet?
           </Text>
-          <StyledLink to="/signup">Create an account</StyledLink>
+          <Text className="text" style={{fontWeight:'700'}}>Talk with your administrator</Text>
         </div>
       </Form>
     </div>

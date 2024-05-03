@@ -4,6 +4,7 @@ import { Image, Button, Modal, Input, message } from "antd";
 import { HeartOutlined, HeartFilled } from "@ant-design/icons";
 import { StyledDiv, StyledText } from "./elements";
 import { useQuery } from "react-query";
+import { getBackendUrl } from "../../../../../../../../utils/config";
 
 const ChangeProgressModal = ({
   visible,
@@ -31,7 +32,7 @@ const ChangeProgressModal = ({
 
     try {
       const response = await fetch(
-        `http://localhost:5000/${route}/${userId}/${course?.id_curso}/${progress}`,
+        `${getBackendUrl()}/${route}/${userId}/${course?.id_curso}/${progress}`,
         {
           method: requestMethod,
           headers: {
@@ -104,7 +105,7 @@ const CourseCard = ({ course, user, refetch, refreshFavList }) => {
     try {
       const newIsFilled = !isFilled;
       const response = await fetch(
-        `http://localhost:5000/actualizar-favorito/${user?.id_usuario}/${
+        `${getBackendUrl()}/actualizar-favorito/${user?.id_usuario}/${
           course?.id_curso
         }/${newIsFilled ? 1 : 0}`,
         {
@@ -215,7 +216,7 @@ const CoursesCard = ({ user, search, favorites }) => {
 
   const fetchUser = async () => {
     const response = await fetch(
-      `http://localhost:5000/favorite-courses/${user?.id_usuario}`
+      `${getBackendUrl()}/favorite-courses/${user?.id_usuario}`
     );
     if (!response.ok) {
       throw new Error("Error al buscar el usuario");
@@ -236,7 +237,7 @@ const CoursesCard = ({ user, search, favorites }) => {
 
   const fetchCourses = async () => {
     const response = await fetch(
-      `http://localhost:5000/cursos-inscritos-usuario/${user?.id_usuario}`
+      `${getBackendUrl()}/cursos-inscritos-usuario/${user?.id_usuario}`
     );
     if (!response.ok) {
       throw new Error("Error al buscar los cursos");

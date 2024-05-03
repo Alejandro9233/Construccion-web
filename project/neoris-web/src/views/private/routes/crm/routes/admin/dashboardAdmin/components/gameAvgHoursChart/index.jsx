@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { StyledDiv, StyledTitle, StyledText } from "./elements";
-import { Row, Col, Statistic } from "antd";
+import { Row, Col } from "antd";
 import { TrophyTwoTone } from "@ant-design/icons";
 import ReactApexChart from "react-apexcharts";
+import { getBackendUrl } from "../../../../../../../../../utils/config";
 
-const GameAvgHoursChart = ({user}) => {
+const GameAvgHoursChart = ({ user }) => {
   // Use state para guardar los minutos promedio dentro del juego por fecha
   // Datos de respuesta: fecha, promedio_minutos_de_juego
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetch(`http://localhost:5000/minutos-juego-por-fecha`)
+      await fetch(`${getBackendUrl()}/minutos-juego-por-fecha`)
         .then((res) => res.json())
         .then((data) => {
           setData(data);
@@ -21,7 +22,7 @@ const GameAvgHoursChart = ({user}) => {
         });
     };
 
-  fetchData();
+    fetchData();
   }, [user]);
 
   // conseguir los arreglos de los ejes verticales y horizontales para las tablas
@@ -31,11 +32,11 @@ const GameAvgHoursChart = ({user}) => {
   // función para quitarle la hora a las fechas
   function formatDate(dates) {
     let formattedDates = [];
-    dates.forEach(date => {
+    dates.forEach((date) => {
       formattedDates.push(date.split("T").shift());
     });
     return formattedDates;
-  };
+  }
 
   return (
     <StyledDiv>

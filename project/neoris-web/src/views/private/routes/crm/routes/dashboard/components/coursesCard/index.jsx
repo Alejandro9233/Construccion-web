@@ -3,6 +3,7 @@ import { Image, Row, Col, Button, message } from "antd";
 import { HeartOutlined, HeartFilled } from "@ant-design/icons";
 import { StyledDiv, StyledTitle, StyledText } from "./elements";
 import { useQuery } from "react-query";
+import { getBackendUrl } from "../../../../../../../../utils/config";
 
 const CourseCard = ({ course, userId, refreshFavList }) => {
   const [isFilled, setIsFilled] = useState(false);
@@ -21,9 +22,9 @@ const CourseCard = ({ course, userId, refreshFavList }) => {
     try {
       const newIsFilled = !isFilled;
       const response = await fetch(
-        `http://localhost:5000/actualizar-favorito/${userId}/${
-          course?.id_curso
-        }/${newIsFilled ? 1 : 0}`,
+        `${getBackendUrl()}/actualizar-favorito/${userId}/${course?.id_curso}/${
+          newIsFilled ? 1 : 0
+        }`,
         {
           method: "PUT",
           headers: {
@@ -147,7 +148,7 @@ const CoursesCard = ({ user }) => {
 
   const fetchUser = async () => {
     const response = await fetch(
-      `http://localhost:5000/favorite-courses/${user?.id_usuario}`
+      `${getBackendUrl()}/favorite-courses/${user?.id_usuario}`
     );
     if (!response.ok) {
       throw new Error("Error al buscar el usuario");
@@ -168,7 +169,7 @@ const CoursesCard = ({ user }) => {
 
   const fetchCourses = async () => {
     const response = await fetch(
-      `http://localhost:5000/listado-cursos-web-card/${user?.id_usuario}`
+      `${getBackendUrl()}/listado-cursos-web-card/${user?.id_usuario}`
     );
     if (!response.ok) {
       throw new Error("Error al obtener cursos");

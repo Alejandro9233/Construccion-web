@@ -11,6 +11,7 @@ import {
 } from "./elements";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useQuery } from "react-query";
+import { getBackendUrl } from "../../../../../../../utils/config";
 
 const { Text } = Typography;
 
@@ -20,7 +21,7 @@ const Users = () => {
   const [selectedUser, setSelectedUser] = useState(null);
 
   const deleteUsers = async (id) => {
-    await fetch(`http://localhost:5000/eliminar-usuario/${id}`, {
+    await fetch(`${getBackendUrl()}/eliminar-usuario/${id}`, {
       method: "PUT",
     })
       .then((res) => res.json())
@@ -36,7 +37,7 @@ const Users = () => {
   };
 
   const fetchUsers = async () => {
-    const response = await fetch(`http://localhost:5000/listar-usuarios`);
+    const response = await fetch(`${getBackendUrl()}/listar-usuarios`);
     if (!response.ok) {
       throw new Error("Ha ocurrido un error al obtener los usuarios");
     }
