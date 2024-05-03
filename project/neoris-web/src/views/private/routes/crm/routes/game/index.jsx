@@ -2,11 +2,11 @@ import React, {Fragment} from "react";
 import {Unity, useUnityContext} from "react-unity-webgl";
 import { ButtonStyled } from "./elements";
 import { useState } from "react";
+import { getBackendUrl } from "../../../../../../utils/config";
 
 const Game = ({user}) => {
   const [login, setLogin] = useState(false);
   const [logout, setLogout] = useState(true);
-
 
   const { unityProvider, sendMessage } = useUnityContext({
     loaderUrl: "/codersTycoon1_1/build/codersTycoon1_1.loader.js",
@@ -16,15 +16,18 @@ const Game = ({user}) => {
   });
 
   function logIn() {
-    sendMessage("LogObject", "logIn", user?.id_usuario.toString());
-    console.log(`logged in as player id: ${user?.id_usuario}`)
+    var userData = {
+        usuario_id: user?.id_usuario.toString(),
+        backend_url: getBackendUrl().toString()
+    };
+    
+    sendMessage("LogObject", "logIn", JSON.stringify(userData));
     disableButtons();
     updateButtonState(true, false);
   }
 
   function logOut() {
-    sendMessage("LogObject", "logOut", user?.id_usuario.toString());
-    console.log(`logged out as player id: ${user?.id_usuario}`)
+    sendMessage("LogObject", "logOut");
     disableButtons();
     updateButtonState(false, true);
   }
@@ -40,7 +43,6 @@ const Game = ({user}) => {
     setLogin(true);
     setLogout(true);
   }
-
 
   return(
       <Fragment>
