@@ -16,16 +16,25 @@ const ChangeProgressModal = ({
   const [progress, setProgress] = useState(course.porcentaje_progreso);
   const [courseTitle] = useState(course.nombre_curso);
   const [loading, setLoading] = useState(false);
-
   const handleOk = async () => {
     setLoading(true);
+
+    let route;
+    let requestMethod;
+
+    if (course?.porcentaje_progreso) {
+      route = "actualizar-progreso-curso";
+      requestMethod = "PUT";
+    } else {
+      route = "crear-progreso-curso";
+      requestMethod = "POST";
+    }
+
     try {
       const response = await fetch(
-        `${getBackendUrl()}/actualizar-progreso-curso/${userId}/${
-          course?.id_curso
-        }/${progress}`,
+        `${getBackendUrl()}/${route}/${userId}/${course?.id_curso}/${progress}`,
         {
-          method: "PUT",
+          method: requestMethod,
           headers: {
             "Content-Type": "application/json",
           },

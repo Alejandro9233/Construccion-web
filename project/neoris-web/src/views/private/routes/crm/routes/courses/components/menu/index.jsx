@@ -13,7 +13,7 @@ const Menu = ({ search, setSearch, isFilled, setIsFilled }) => {
   return (
     <div
       style={{
-        width: "calc(100% - 4.1rem)",
+        width: "100%",
         height: "calc(100% - 4.1rem)",
       }}
     >
