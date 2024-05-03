@@ -211,7 +211,7 @@ const Sidebar = ({ user, setUser }) => {
         }}
       >
         <Button danger onClick={() => handleLogout()}>
-          Cerrar Session
+          Cerrar Sesión
         </Button>
       </div>
     </Container>
